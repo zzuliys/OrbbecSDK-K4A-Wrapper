@@ -1,0 +1,21 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "ob/feature/1.1.x" ]
+  pull_request:
+    branches: [ "ob/feature/1.1.x" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: pull submodule
+      run: git submodule update
+    - name: cmake
+      run:  mkdir build && cd build && cmake ..
+    - name: make
+      run: cd build && make
