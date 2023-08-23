@@ -20,6 +20,10 @@
 extern "C" {
 #endif
 
+#define WRAPPER_VERSION_MAJOR 1
+#define WRAPPER_VERSION_MINOR 0
+#define WRAPPER_VERSION_PATCH 11
+
 /**
  * \defgroup Functions Functions
  * \ingroup csdk

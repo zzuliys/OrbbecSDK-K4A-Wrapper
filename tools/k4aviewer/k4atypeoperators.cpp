@@ -147,6 +147,7 @@ namespace
 {
 constexpr char FramesPerSecond5[] = "K4A_FRAMES_PER_SECOND_5";
 constexpr char FramesPerSecond15[] = "K4A_FRAMES_PER_SECOND_15";
+constexpr char FramesPerSecond25[] = "K4A_FRAMES_PER_SECOND_25";
 constexpr char FramesPerSecond30[] = "K4A_FRAMES_PER_SECOND_30";
 } // namespace
 
@@ -159,6 +160,9 @@ std::ostream &operator<<(std::ostream &s, const k4a_fps_t &val)
         break;
     case K4A_FRAMES_PER_SECOND_15:
         s << FramesPerSecond15;
+        break;
+    case K4A_FRAMES_PER_SECOND_25:
+        s << FramesPerSecond25;
         break;
     case K4A_FRAMES_PER_SECOND_30:
         s << FramesPerSecond30;
@@ -181,6 +185,10 @@ std::istream &operator>>(std::istream &s, k4a_fps_t &val)
     {
         val = K4A_FRAMES_PER_SECOND_15;
     }
+    else if (str == FramesPerSecond25)
+    {
+        val = K4A_FRAMES_PER_SECOND_25;
+    }
     else if (str == FramesPerSecond30)
     {
         val = K4A_FRAMES_PER_SECOND_30;
@@ -200,6 +208,8 @@ constexpr char DepthModeNfovUnbinned[] = "K4A_DEPTH_MODE_NFOV_UNBINNED";
 constexpr char DepthModeWfov2x2Binned[] = "K4A_DEPTH_MODE_WFOV_2X2BINNED";
 constexpr char DepthModeWfovUnbinned[] = "K4A_DEPTH_MODE_WFOV_UNBINNED";
 constexpr char DepthModePassiveIr[] = "K4A_DEPTH_MODE_PASSIVE_IR";
+constexpr char DepthMode640X480[] = "K4A_DEPTH_MODE_640X480";
+
 } // namespace
 
 std::ostream &operator<<(std::ostream &s, const k4a_depth_mode_t &val)
@@ -223,6 +233,9 @@ std::ostream &operator<<(std::ostream &s, const k4a_depth_mode_t &val)
         break;
     case K4A_DEPTH_MODE_PASSIVE_IR:
         s << DepthModePassiveIr;
+        break;
+    case K4A_DEPTH_MODE_640x480:
+        s << DepthMode640X480;
         break;
     default:
         throw std::logic_error("Unrecognized depth mode");
@@ -258,6 +271,10 @@ std::istream &operator>>(std::istream &s, k4a_depth_mode_t &val)
     {
         val = K4A_DEPTH_MODE_PASSIVE_IR;
     }
+    else if (str == DepthMode640X480)
+    {
+        val = K4A_DEPTH_MODE_640x480;
+    }
     else
     {
         s.setstate(std::ios::failbit);
@@ -274,6 +291,8 @@ constexpr char ColorResolution1440p[] = "K4A_COLOR_RESOLUTION_1440P";
 constexpr char ColorResolution1536p[] = "K4A_COLOR_RESOLUTION_1536P";
 constexpr char ColorResolution2160p[] = "K4A_COLOR_RESOLUTION_2160P";
 constexpr char ColorResolution3072p[] = "K4A_COLOR_RESOLUTION_3072P";
+constexpr char ColorResolution480p[] = "K4A_COLOR_RESOLUTION_480P";
+constexpr char ColorResolution960p[] = "K4A_COLOR_RESOLUTION_960P";
 } // namespace
 
 std::ostream &operator<<(std::ostream &s, const k4a_color_resolution_t &val)
@@ -300,6 +319,12 @@ std::ostream &operator<<(std::ostream &s, const k4a_color_resolution_t &val)
         break;
     case K4A_COLOR_RESOLUTION_3072P:
         s << ColorResolution3072p;
+        break;
+    case K4A_COLOR_RESOLUTION_480P:
+        s << ColorResolution480p;
+        break;
+    case K4A_COLOR_RESOLUTION_960P:
+        s << ColorResolution960p;
         break;
     default:
         throw std::logic_error("Unrecognized color resolution");
@@ -338,6 +363,14 @@ std::istream &operator>>(std::istream &s, k4a_color_resolution_t &val)
     else if (str == ColorResolution3072p)
     {
         val = K4A_COLOR_RESOLUTION_3072P;
+    }
+    else if (str == ColorResolution480p)
+    {
+        val = K4A_COLOR_RESOLUTION_480P;
+    }
+    else if (str == ColorResolution960p)
+    {
+        val = K4A_COLOR_RESOLUTION_960P;
     }
     else
     {

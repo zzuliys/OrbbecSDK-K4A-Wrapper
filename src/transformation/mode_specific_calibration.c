@@ -213,6 +213,16 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
+    case K4A_COLOR_RESOLUTION_960P:
+    {
+        //k4a_camera_calibration_mode_info_t mode_info = { { 1280, 960 }, { 0, 0 }, { 1280, 960 } };
+        k4a_camera_calibration_mode_info_t mode_info = { { 1707, 1280 }, { 213, 160 }, { 1280, 960 } };
+        return TRACE_CALL(
+            transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
+                                                                &mode_info,
+                                                                mode_specific_camera_calibration,
+                                                               /* pixelized_zero_centered_output = */ true));
+    }
     default:
     {
         LOG_ERROR("Unexpected color resolution type %d.", color_resolution);

@@ -29,14 +29,14 @@ void K4AVideoWindow<K4A_IMAGE_FORMAT_DEPTH16>::RenderInfoPane(const k4a::image &
     RenderBasicInfoPane(image);
     RenderHoveredDepthPixelValue(image, hoveredPixel, "mm");
 
-    const float sensorTemp = m_imageSource->GetLastSensorTemperature();
+   // const float sensorTemp = m_imageSource->GetLastSensorTemperature();
 
     // In recordings, there is no sensor temperature, so it's set to NaN.
     //
-    if (!std::isnan(sensorTemp))
-    {
-        ImGui::Text("Sensor temperature: %.2f C", double(sensorTemp));
-    }
+    //if (!std::isnan(sensorTemp))
+    //{
+    //    ImGui::Text("Sensor temperature: %.2f C", double(sensorTemp));
+    //}
 }
 
 template<>

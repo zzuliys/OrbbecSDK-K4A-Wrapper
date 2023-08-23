@@ -83,7 +83,7 @@ private:
     int32_t m_depthDelayOffColorUsec;
     std::string m_wiredSyncModeLabel;
     uint32_t m_subordinateDelayOffMasterUsec;
-    uint32_t m_startTimestampOffsetUsec;
+    uint64_t m_startTimestampOffsetUsec;
     uint64_t m_recordingLengthUsec;
 
     std::string m_deviceSerialNumber;

@@ -37,12 +37,13 @@ int main(int argc, char **argv)
         printf("Failed to open device\n");
         goto Exit;
     }
-
+    
+   
     k4a_device_configuration_t config = K4A_DEVICE_CONFIG_INIT_DISABLE_ALL;
     config.color_format = K4A_IMAGE_FORMAT_COLOR_MJPG;
-    config.color_resolution = K4A_COLOR_RESOLUTION_2160P;
+    config.color_resolution = K4A_COLOR_RESOLUTION_1080P;
     config.depth_mode = K4A_DEPTH_MODE_NFOV_UNBINNED;
-    config.camera_fps = K4A_FRAMES_PER_SECOND_30;
+    config.camera_fps = K4A_FRAMES_PER_SECOND_25;
 
     if (K4A_RESULT_SUCCEEDED != k4a_device_start_cameras(device, &config))
     {
@@ -74,10 +75,11 @@ int main(int argc, char **argv)
         image = k4a_capture_get_color_image(capture);
         if (image)
         {
-            printf(" | Color res:%4dx%4d stride:%5d ",
+            printf(" | Color res:%4dx%4d stride:%5d,dataSize:%d ",
                    k4a_image_get_height_pixels(image),
                    k4a_image_get_width_pixels(image),
-                   k4a_image_get_stride_bytes(image));
+                   k4a_image_get_stride_bytes(image),
+                   (int)k4a_image_get_size(image));
             k4a_image_release(image);
         }
         else
@@ -124,6 +126,7 @@ int main(int argc, char **argv)
 Exit:
     if (device != NULL)
     {
+        k4a_device_stop_cameras(device);
         k4a_device_close(device);
     }
 

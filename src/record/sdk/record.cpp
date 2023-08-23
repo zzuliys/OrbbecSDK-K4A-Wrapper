@@ -647,8 +647,8 @@ k4a_result_t k4a_record_write_capture(const k4a_record_t recording_handle, k4a_c
                             data_buffer_raw[j] = swap_bytes_16(data_buffer_raw[j]);
                         }
                     }
-
-                    uint64_t timestamp_ns = k4a_image_get_device_timestamp_usec(images[i]) * 1000;
+                    uint64_t device_timestamp = k4a_image_get_device_timestamp_usec(images[i]);
+                    uint64_t timestamp_ns = device_timestamp * 1000;
                     k4a_result_t tmp_result = TRACE_CALL(
                         write_track_data(context, tracks[i], timestamp_ns, data_buffer));
                     if (K4A_FAILED(tmp_result))

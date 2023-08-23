@@ -1220,7 +1220,9 @@ static void transformation_depth_to_xyz(k4a_transformation_xy_tables_t *xy_table
 
     for (int i = 0; i < xy_tables->width * xy_tables->height / 8; i++)
     {
-        __m128i z = *depth_image_data_m128i++;
+        //__m128i z = *depth_image_data_m128i++;
+        __m128i z = _mm_loadu_si128(depth_image_data_m128i);
+        depth_image_data_m128i++;
 
         __m128 x_tab_lo = *x_table_m128++;
         __m128 x_tab_hi = *x_table_m128++;
@@ -1248,11 +1250,19 @@ static void transformation_depth_to_xyz(k4a_transformation_xy_tables_t *xy_table
         z = _mm_shuffle_epi8(z, z_shuffle);
 
         // x0, y0, z0, x1, y1, z1, x2, y2
-        *xyz_data_m128i++ = _mm_blend_epi16(_mm_blend_epi16(x, y, 0x92), z, 0x24);
+        //*xyz_data_m128i++ = _mm_blend_epi16(_mm_blend_epi16(x, y, 0x92), z, 0x24);
+        _mm_storeu_si128(xyz_data_m128i, _mm_blend_epi16(_mm_blend_epi16(x, y, 0x92), z, 0x24));
+        xyz_data_m128i++;
+
         // z2, x3, y3, z3, x4, y4, z4, x5
-        *xyz_data_m128i++ = _mm_blend_epi16(_mm_blend_epi16(x, y, 0x24), z, 0x49);
+        //*xyz_data_m128i++ = _mm_blend_epi16(_mm_blend_epi16(x, y, 0x24), z, 0x49);
+        _mm_storeu_si128(xyz_data_m128i, _mm_blend_epi16(_mm_blend_epi16(x, y, 0x24), z, 0x49));
+        xyz_data_m128i++;
+
         // y5, z5, x6, y6, z6, x7, y7, z7
-        *xyz_data_m128i++ = _mm_blend_epi16(_mm_blend_epi16(x, y, 0x49), z, 0x92);
+        //*xyz_data_m128i++ = _mm_blend_epi16(_mm_blend_epi16(x, y, 0x49), z, 0x92);
+        _mm_storeu_si128(xyz_data_m128i, _mm_blend_epi16(_mm_blend_epi16(x, y, 0x49), z, 0x92));
+        xyz_data_m128i++;
     }
 }
 #endif
@@ -1268,23 +1278,24 @@ transformation_depth_image_to_point_cloud_internal(k4a_transformation_xy_tables_
     {
         return K4A_BUFFER_RESULT_FAILED;
     }
+    // TODO:
+    // k4a_transformation_image_descriptor_t expected_xyz_image_descriptor = transformation_init_image_descriptor(
+    //     xy_tables->width, xy_tables->height, xy_tables->width * 3 * (int)sizeof(int16_t),
+    //     xyz_image_descriptor->format);
 
-    k4a_transformation_image_descriptor_t expected_xyz_image_descriptor = transformation_init_image_descriptor(
-        xy_tables->width, xy_tables->height, xy_tables->width * 3 * (int)sizeof(int16_t), xyz_image_descriptor->format);
-
-    if (xyz_image_data == 0 ||
-        transformation_compare_image_descriptors(xyz_image_descriptor, &expected_xyz_image_descriptor) == false)
-    {
-        if (xyz_image_data == 0)
-        {
-            LOG_ERROR("XYZ image data is null.", 0);
-        }
-        else
-        {
-            LOG_ERROR("Unexpected XYZ image descriptor, see details above.", 0);
-        }
-        return K4A_BUFFER_RESULT_TOO_SMALL;
-    }
+    // if (xyz_image_data == 0 ||
+    //     transformation_compare_image_descriptors(xyz_image_descriptor, &expected_xyz_image_descriptor) == false)
+    //{
+    //     if (xyz_image_data == 0)
+    //     {
+    //         LOG_ERROR("XYZ image data is null.", 0);
+    //     }
+    //     else
+    //     {
+    //         LOG_ERROR("Unexpected XYZ image descriptor, see details above.", 0);
+    //     }
+    //     return K4A_BUFFER_RESULT_TOO_SMALL;
+    // }
 
     if (depth_image_data == 0 || depth_image_descriptor == 0)
     {

@@ -204,18 +204,28 @@ bool K4APointCloudWindow::CheckVisualizationResult(PointCloudVisualizationResult
         return true;
     case PointCloudVisualizationResult::MissingDepthImage:
         ++m_consecutiveMissingImages;
+        //K4AViewerLogManager::Instance()
+        //    .Log(K4A_LOG_LEVEL_WARNING,
+        //         __FILE__,
+        //         __LINE__,
+        //         "Dropped a capture due to a missing depth image - set \"Synchronized Images Only\" to avoid this");
         K4AViewerLogManager::Instance()
             .Log(K4A_LOG_LEVEL_WARNING,
                  __FILE__,
                  __LINE__,
-                 "Dropped a capture due to a missing depth image - set \"Synchronized Images Only\" to avoid this");
+                 "Dropped a capture due to a missing depth image");
         break;
     case PointCloudVisualizationResult::MissingColorImage:
+        //K4AViewerLogManager::Instance()
+        //    .Log(K4A_LOG_LEVEL_WARNING,
+        //         __FILE__,
+        //         __LINE__,
+        //         "Dropped a capture due to a missing color image - set \"Synchronized Images Only\" to avoid this");
         K4AViewerLogManager::Instance()
             .Log(K4A_LOG_LEVEL_WARNING,
                  __FILE__,
                  __LINE__,
-                 "Dropped a capture due to a missing color image - set \"Synchronized Images Only\" to avoid this");
+                 "Dropped a capture due to a missing color image");
         ++m_consecutiveMissingImages;
         break;
     case PointCloudVisualizationResult::OpenGlError:

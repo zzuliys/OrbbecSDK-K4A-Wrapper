@@ -33,7 +33,7 @@ static intrinsic_type_to_string_mapper_t intrinsic_type_mapper[] =
 
 typedef struct _calibration_context_t
 {
-    depthmcu_t depthmcu;
+   // depthmcu_t depthmcu;
 
     size_t json_size;
     char *json; // string representation of JSON file
@@ -536,6 +536,7 @@ static k4a_result_t get_imu_calibration(char *json, k4a_calibration_imu_t *cal, 
     return result;
 }
 
+/*
 static k4a_result_t read_extrinsic_calibration(calibration_context_t *calibration)
 {
     size_t json_size;
@@ -583,23 +584,44 @@ static k4a_result_t read_extrinsic_calibration(calibration_context_t *calibratio
 
     return result;
 }
+*/
 
-k4a_result_t calibration_create(depthmcu_t depthmcu, calibration_t *calibration_handle)
+k4a_result_t calibration_create(char *raw_calibration, size_t raw_calibration_size, calibration_t *calibration_handle)
 {
     calibration_context_t *calibration;
     k4a_result_t result;
-
-    RETURN_VALUE_IF_ARG(K4A_RESULT_FAILED, depthmcu == NULL);
+    size_t json_size = READ_RETRY_BASE_ALLOCATION;
+    char *json = NULL;
+    
     RETURN_VALUE_IF_ARG(K4A_RESULT_FAILED, calibration_handle == NULL);
+
+    json = malloc(json_size);
+    result = K4A_RESULT_FROM_BOOL(json != NULL);
+    if (result != K4A_RESULT_SUCCEEDED)
+    {
+        return result;
+    }
+
+    if (raw_calibration_size > json_size)
+    {
+        free(json);
+        return K4A_RESULT_FAILED;
+    }
+
+    memcpy(json, raw_calibration, raw_calibration_size);
+
 
     calibration = calibration_t_create(calibration_handle);
     result = K4A_RESULT_FROM_BOOL(calibration != NULL);
 
     if (K4A_SUCCEEDED(result))
     {
-        calibration->depthmcu = depthmcu;
-
-        result = read_extrinsic_calibration(calibration);
+        if (K4A_SUCCEEDED(result))
+        {
+            json[raw_calibration_size+1] = '\0'; // NULL terminate the json calibration, which is ASCII text
+            calibration->json = json;
+            calibration->json_size = raw_calibration_size + 1 ; // ++ for NULL
+        }
     }
 
     if (K4A_SUCCEEDED(result))
@@ -630,7 +652,7 @@ k4a_result_t calibration_create_from_raw(char *raw_calibration,
                                          k4a_calibration_imu_t *accel_calibration)
 {
     RETURN_VALUE_IF_ARG(K4A_RESULT_FAILED, raw_calibration == NULL);
-    RETURN_VALUE_IF_ARG(K4A_RESULT_FAILED, !(strnlen(raw_calibration, raw_calibration_size) < raw_calibration_size));
+    RETURN_VALUE_IF_ARG(K4A_RESULT_FAILED, !(strnlen(raw_calibration, raw_calibration_size) <= raw_calibration_size));
     RETURN_VALUE_IF_ARG(K4A_RESULT_FAILED,
                         depth_calibration == NULL && color_calibration == NULL && gyro_calibration == NULL &&
                             accel_calibration == NULL);

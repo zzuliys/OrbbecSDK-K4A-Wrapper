@@ -187,19 +187,25 @@ public:
     K4ABGRA32ImageConverter(k4a_color_resolution_t resolution) : K4AColorImageConverterBase(resolution) {}
 };
 
+//MJPEG ½âÂë
 class K4AMJPGImageConverter : public K4AColorImageConverterBase<K4A_IMAGE_FORMAT_COLOR_MJPG>
 {
 public:
     ImageConversionResult ConvertImage(const k4a::image &srcImage, k4a::image *bgraImage) override
     {
         // MJPG images are not of a consistent size, so we can't compute an expected size
+        int srcImageSize = (int)srcImage.get_size(); 
+        if (srcImageSize < 1024)
+        {
+            return ImageConversionResult::InvalidImageDataError;
+        }
         //
         if (!ImagesAreCorrectlySized(srcImage, *bgraImage, nullptr))
         {
             return ImageConversionResult::InvalidBufferSizeError;
         }
 
-        static PerfCounter mjpgDecode("MJPG decode");
+        static PerfCounter mjpgDecode("MJPG decode"); 
         PerfSample decodeSample(&mjpgDecode);
 
         const int decompressStatus = tjDecompress2(m_decompressor,

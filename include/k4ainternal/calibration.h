@@ -88,7 +88,8 @@ typedef struct _k4a_calibration_imu_t
  *
  * \return K4A_RESULT_SUCCEEDED is returned on success, otherwise K4A_RESULT_FAILED is returned
  */
-k4a_result_t calibration_create(depthmcu_t depthmcu, calibration_t *calibration_handle);
+//k4a_result_t calibration_create(depthmcu_t depthmcu, calibration_t *calibration_handle);
+k4a_result_t calibration_create(char *raw_calibration, size_t raw_calibration_size, calibration_t *calibration_handle);
 
 /** Creates an calibration instance
  *

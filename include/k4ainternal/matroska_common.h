@@ -193,13 +193,15 @@ static_assert(sizeof(matroska_imu_sample_t) ==
 
 static const k4a_color_resolution_t color_resolutions[] = { K4A_COLOR_RESOLUTION_720P,  K4A_COLOR_RESOLUTION_1080P,
                                                             K4A_COLOR_RESOLUTION_1440P, K4A_COLOR_RESOLUTION_1536P,
-                                                            K4A_COLOR_RESOLUTION_2160P, K4A_COLOR_RESOLUTION_3072P };
+                                                            K4A_COLOR_RESOLUTION_2160P, K4A_COLOR_RESOLUTION_3072P,
+                                                            K4A_COLOR_RESOLUTION_480P,  K4A_COLOR_RESOLUTION_960P };
 
 static const std::pair<k4a_depth_mode_t, std::string> depth_modes[] =
     { { K4A_DEPTH_MODE_NFOV_2X2BINNED, "NFOV_2X2BINNED" },
       { K4A_DEPTH_MODE_NFOV_UNBINNED, "NFOV_UNBINNED" },
       { K4A_DEPTH_MODE_WFOV_2X2BINNED, "WFOV_2X2BINNED" },
       { K4A_DEPTH_MODE_WFOV_UNBINNED, "WFOV_UNBINNED" },
+      { K4A_DEPTH_MODE_640x480, "DEPTH_640x480" },
       { K4A_DEPTH_MODE_PASSIVE_IR, "PASSIVE_IR" } };
 
 static const std::pair<k4a_wired_sync_mode_t, std::string> external_sync_modes[] =

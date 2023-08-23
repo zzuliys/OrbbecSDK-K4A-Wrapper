@@ -445,6 +445,7 @@ public:
 
     /** Sets capture to a shallow copy of the other image
      */
+    //TODO:
     capture &operator=(const capture &other) noexcept
     {
         if (this != &other)
@@ -1283,6 +1284,7 @@ public:
 
         if (result == K4A_BUFFER_RESULT_TOO_SMALL && buffer > 1)
         {
+            buffer += 1;
             serialnum.resize(buffer);
             result = k4a_device_get_serialnum(m_handle, &serialnum[0], &buffer);
             if (result == K4A_BUFFER_RESULT_SUCCEEDED && serialnum[buffer - 1] == 0)

@@ -295,6 +295,9 @@ typedef enum
     K4A_DEPTH_MODE_WFOV_2X2BINNED, /**< Depth captured at 512x512. Passive IR is also captured at 512x512. */
     K4A_DEPTH_MODE_WFOV_UNBINNED,  /**< Depth captured at 1024x1024. Passive IR is also captured at 1024x1024. */
     K4A_DEPTH_MODE_PASSIVE_IR,     /**< Passive IR only, captured at 1024x1024. */
+    K4A_DEPTH_MODE_640x480,        /*Depth captured at 640x480. Passive IR is also captured at 640x480.*/
+    K4A_DEPTH_MODE_320x240,        /*Depth captured at 320x240. Passive IR is also captured at 320x240.*/
+
 } k4a_depth_mode_t;
 
 /** Color sensor resolutions.
@@ -315,6 +318,9 @@ typedef enum
     K4A_COLOR_RESOLUTION_1536P,   /**< 2048 * 1536 4:3  */
     K4A_COLOR_RESOLUTION_2160P,   /**< 3840 * 2160 16:9 */
     K4A_COLOR_RESOLUTION_3072P,   /**< 4096 * 3072 4:3  */
+    K4A_COLOR_RESOLUTION_480P,       /**< 640 * 480 4:3  */
+    K4A_COLOR_RESOLUTION_960P,       /**< 1280 * 960 4:3  */
+    K4A_COLOR_RESOLUTION_1024X768,   /**< 1024 * 768   */
 } k4a_color_resolution_t;
 
 /** Image format type.
@@ -479,6 +485,7 @@ typedef enum
 {
     K4A_FRAMES_PER_SECOND_5 = 0, /**< 5 FPS */
     K4A_FRAMES_PER_SECOND_15,    /**< 15 FPS */
+    K4A_FRAMES_PER_SECOND_25,    /**< 25 FPS */
     K4A_FRAMES_PER_SECOND_30,    /**< 30 FPS */
 } k4a_fps_t;
 
@@ -542,7 +549,7 @@ typedef enum
      * May only be set to ::K4A_COLOR_CONTROL_MODE_MANUAL.
      *
      * \details
-     * The valid range is 0 to 255. The default value is 128.
+     * The valid range is 0 to 100. The default value is 50.
      */
     K4A_COLOR_CONTROL_BRIGHTNESS,
 

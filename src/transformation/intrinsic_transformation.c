@@ -62,7 +62,7 @@ static k4a_result_t transformation_project_internal(const k4a_calibration_camera
     float cody = params->param.cody;
     float p1 = params->param.p1;
     float p2 = params->param.p2;
-    float max_radius_for_projection = camera_calibration->metric_radius;
+    //float max_radius_for_projection = camera_calibration->metric_radius;
 
     if (K4A_FAILED(K4A_RESULT_FROM_BOOL(fx > 0.f && fy > 0.f)))
     {
@@ -81,11 +81,11 @@ static k4a_result_t transformation_project_internal(const k4a_calibration_camera
     float yp2 = yp * yp;
     float xyp = xp * yp;
     float rs = xp2 + yp2;
-    if (rs > max_radius_for_projection * max_radius_for_projection)
-    {
-        *valid = 0;
-        return K4A_RESULT_SUCCEEDED;
-    }
+    //if (rs > max_radius_for_projection * max_radius_for_projection)
+    //{
+    //    *valid = 0;
+    //    return K4A_RESULT_SUCCEEDED;
+    //}
     float rss = rs * rs;
     float rsc = rss * rs;
     float a = 1.f + k1 * rs + k2 * rss + k3 * rsc;
@@ -259,9 +259,9 @@ static k4a_result_t transformation_unproject_internal(const k4a_calibration_came
         g_deprecated_6kt_message_fired == false)
     {
         g_deprecated_6kt_message_fired = true;
-        LOG_CRITICAL("Rational 6KT is deprecated (only supported early internal devices). Please replace your Azure "
-                     "Kinect with a retail device.",
-                     0);
+        //LOG_CRITICAL("Rational 6KT is deprecated (only supported early internal devices). Please replace your Azure "
+        //             "Kinect with a retail device.",
+        //             0);
     }
 
     const k4a_calibration_intrinsic_parameters_t *params = &camera_calibration->intrinsics.parameters;

@@ -122,7 +122,47 @@ protected:
         // from the mode we're listening for, we don't want to update
         // our data.
         //
+        //从Frameset中获取image,将image压入到队列
+        if (!data.is_valid())
+        {
+            printf(" capture data invalid\n");
+            return;
+        }
+
         k4a::image image = K4AImageExtractor::GetImageFromCapture<ImageFormat>(data);
+        if (!image.is_valid())
+        {
+            printf(" image invalid\n");
+            return;
+        }
+
+        int imageSize = (int)image.get_size();
+        if (imageSize < 1024)
+        {
+            //过滤掉OrbbecSdk mjpeg前两帧长度异常都是 512byes
+            image.reset();
+            return;
+        }
+
+        if (image.get_format() == K4A_IMAGE_FORMAT_COLOR_MJPG)
+        {
+             uint8_t *pMjpeg = image.get_buffer();
+
+            //过滤掉OrbbecSdk mjpeg中的错误的数据,通过jpeg的包头0xFFD8 尾0xFFD9
+            if (pMjpeg[0] != 0xff || pMjpeg[1] != 0xd8 || 
+                (!(pMjpeg[imageSize - 2] == 0xff || pMjpeg[imageSize - 2] == 0xd9 || pMjpeg[imageSize - 2] == 0)) ||
+                 (!(pMjpeg[imageSize - 1] == 0xd9 || pMjpeg[imageSize - 1] == 0)))
+            {
+                printf("pMjpeg[0]=%d,pMjpeg[1]=%d,pMjpeg[len-2]=%d,pMjpeg[len-1] =%d\n",
+                       pMjpeg[0],
+                       pMjpeg[1],
+                       pMjpeg[imageSize -2],
+                       pMjpeg[imageSize -1]);
+                image.reset();
+                return;
+            }
+        }
+
         if (image != nullptr)
         {
             // Hand the image off to our worker thread.
@@ -168,11 +208,15 @@ private:
                 if (result != ImageConversionResult::Success)
                 {
                     // We treat visualization failures as fatal.  Stop the thread.
+                    // TODO:
                     //
-                    fs->m_failureCode = result;
-                    fs->NotifyTermination();
-                    fs->m_textureBuffers.AbortInsert();
-                    return;
+                   // fs->m_failureCode = result;
+                    imageToConvert.reset();
+                    //MJPEG 解码失败,不终止线程,简单跳过
+                    //fs->NotifyTermination();
+                    //fs->m_textureBuffers.AbortInsert();
+                    fs->m_textureBuffers.EndInsert();
+                    continue;
                 }
 
                 // Save off the source image so the viewer can show things like pixel values
@@ -230,19 +274,19 @@ public:
     {
     }
 
-    float GetLastSensorTemperature()
+  /*  float GetLastSensorTemperature()
     {
         return m_lastSensorTemperature;
-    }
+    }*/
 
     void NotifyData(const k4a::capture &data) override
     {
-        m_lastSensorTemperature = data.get_temperature_c();
+        //m_lastSensorTemperature = data.get_temperature_c();
         NotifyDataImpl(data);
     }
 
 private:
-    float m_lastSensorTemperature = 0.0f;
+    //float m_lastSensorTemperature = 0.0f;
 };
 
 } // namespace k4aviewer

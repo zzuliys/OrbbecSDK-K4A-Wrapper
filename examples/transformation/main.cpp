@@ -146,9 +146,9 @@ static int capture(std::string output_dir, uint8_t deviceId = K4A_DEVICE_DEFAULT
     }
 
     config.color_format = K4A_IMAGE_FORMAT_COLOR_BGRA32;
-    config.color_resolution = K4A_COLOR_RESOLUTION_720P;
-    config.depth_mode = K4A_DEPTH_MODE_NFOV_UNBINNED;
-    config.camera_fps = K4A_FRAMES_PER_SECOND_30;
+    config.color_resolution = K4A_COLOR_RESOLUTION_2160P;
+    config.depth_mode = K4A_DEPTH_MODE_WFOV_UNBINNED;
+    config.camera_fps = K4A_FRAMES_PER_SECOND_15;
     config.synchronized_images_only = true; // ensures that depth and color images are both available in the capture
 
     k4a_calibration_t calibration;
@@ -167,33 +167,52 @@ static int capture(std::string output_dir, uint8_t deviceId = K4A_DEVICE_DEFAULT
         goto Exit;
     }
 
-    // Get a capture
-    switch (k4a_device_get_capture(device, &capture, TIMEOUT_IN_MS))
+    while (true)
     {
-    case K4A_WAIT_RESULT_SUCCEEDED:
-        break;
-    case K4A_WAIT_RESULT_TIMEOUT:
-        printf("Timed out waiting for a capture\n");
-        goto Exit;
-    case K4A_WAIT_RESULT_FAILED:
-        printf("Failed to read a capture\n");
-        goto Exit;
-    }
+        // Get a capture
+        switch (k4a_device_get_capture(device, &capture, TIMEOUT_IN_MS))
+        {
+        case K4A_WAIT_RESULT_SUCCEEDED:
+            break;
+        case K4A_WAIT_RESULT_TIMEOUT:
+            printf("Timed out waiting for a capture\n");
+            goto Exit;
+        case K4A_WAIT_RESULT_FAILED:
+            printf("Failed to read a capture\n");
+            goto Exit;
+        }
 
-    // Get a depth image
-    depth_image = k4a_capture_get_depth_image(capture);
-    if (depth_image == 0)
-    {
-        printf("Failed to get depth image from capture\n");
-        goto Exit;
-    }
+        // Get a depth image
+        depth_image = k4a_capture_get_depth_image(capture);
+        if (depth_image == NULL)
+        {
+            printf("Failed to get depth image from capture\n");
+        }
 
-    // Get a color image
-    color_image = k4a_capture_get_color_image(capture);
-    if (color_image == 0)
-    {
-        printf("Failed to get color image from capture\n");
-        goto Exit;
+        if (color_image == NULL)
+        {
+            printf("Failed to get color image from capture\n");
+        }
+        // Get a color image
+        color_image = k4a_capture_get_color_image(capture);
+        if (depth_image != NULL && color_image != NULL)
+        {
+            break;
+        }
+        else if (depth_image != NULL)
+        {
+            k4a_image_release(depth_image);
+            continue;
+        }
+        else if (color_image != NULL)
+        {
+            k4a_image_release(color_image);
+            continue;
+        }
+        else
+        {
+            continue;
+        }
     }
 
     // Compute color point cloud by warping color image into depth camera geometry

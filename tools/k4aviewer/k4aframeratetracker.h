@@ -34,7 +34,6 @@ public:
         std::lock_guard<std::mutex> lock(m_mutex);
 
         const auto newSampleTime = std::chrono::high_resolution_clock::now();
-
         std::chrono::duration<double> frameDurationSeconds = newSampleTime - m_lastSampleTime;
 
         m_framerateSampleAccumulator += frameDurationSeconds.count();

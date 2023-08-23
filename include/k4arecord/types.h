@@ -210,7 +210,7 @@ typedef struct _k4a_record_configuration_t
      * The timestamp offset of the start of the recording. All recorded timestamps are offset by this value such that
      * the recording starts at timestamp 0. This value can be used to synchronize timestamps between 2 recording files.
      */
-    uint32_t start_timestamp_offset_usec;
+    uint64_t start_timestamp_offset_usec;
 } k4a_record_configuration_t;
 
 /** Structure containing additional metadata specific to custom video tracks.

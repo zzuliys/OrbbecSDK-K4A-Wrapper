@@ -61,7 +61,9 @@ K4ARecordingDockControl::K4ARecordingDockControl(std::string &&path, k4a::playba
     case K4A_FRAMES_PER_SECOND_15:
         m_playbackThreadState.TimePerFrame = std::chrono::microseconds(std::micro::den / (std::micro::num * 15));
         break;
-
+    case K4A_FRAMES_PER_SECOND_25:
+        m_playbackThreadState.TimePerFrame = std::chrono::microseconds(std::micro::den / (std::micro::num * 25));
+        break;
     case K4A_FRAMES_PER_SECOND_30:
     default:
         m_playbackThreadState.TimePerFrame = std::chrono::microseconds(std::micro::den / (std::micro::num * 30));
@@ -156,7 +158,7 @@ K4ADockControlStatus K4ARecordingDockControl::Show()
     ImGui::Text("Depth/color delay (us): %d", m_depthDelayOffColorUsec);
     ImGui::Text("Sync mode:              %s", m_wiredSyncModeLabel.c_str());
     ImGui::Text("Subordinate delay (us): %d", m_subordinateDelayOffMasterUsec);
-    ImGui::Text("Start timestamp offset: %d", m_startTimestampOffsetUsec);
+    ImGui::Text("Start timestamp offset: %llu", m_startTimestampOffsetUsec);
     ImGui::Text("Recording Length (us):  %lu", m_recordingLengthUsec);
     ImGui::Separator();
 

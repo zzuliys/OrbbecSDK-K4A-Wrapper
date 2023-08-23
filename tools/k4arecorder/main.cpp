@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     k4a_depth_mode_t recording_depth_mode = K4A_DEPTH_MODE_NFOV_UNBINNED;
     k4a_fps_t recording_rate = K4A_FRAMES_PER_SECOND_30;
     bool recording_rate_set = false;
-    bool recording_imu_enabled = true;
+    bool recording_imu_enabled = false;
     k4a_wired_sync_mode_t wired_sync_mode = K4A_WIRED_SYNC_MODE_STANDALONE;
     int32_t depth_delay_off_color_usec = 0;
     uint32_t subordinate_delay_off_master_usec = 0;
@@ -148,14 +148,10 @@ int main(int argc, char **argv)
                               });
     cmd_parser.RegisterOption("-c|--color-mode",
                               "Set the color sensor mode (default: 1080p), Available options:\n"
-                              "3072p, 2160p, 1536p, 1440p, 1080p, 720p, 720p_NV12, 720p_YUY2, OFF",
+                              "2160p, 1536p, 1440p, 1080p, 720p, 720p_NV12, 720p_YUY2, OFF",
                               1,
                               [&](const std::vector<char *> &args) {
-                                  if (string_compare(args[0], "3072p") == 0)
-                                  {
-                                      recording_color_resolution = K4A_COLOR_RESOLUTION_3072P;
-                                  }
-                                  else if (string_compare(args[0], "2160p") == 0)
+                                 if (string_compare(args[0], "2160p") == 0)
                                   {
                                       recording_color_resolution = K4A_COLOR_RESOLUTION_2160P;
                                   }
@@ -245,13 +241,17 @@ int main(int argc, char **argv)
     cmd_parser.RegisterOption("-r|--rate",
                               "Set the camera frame rate in Frames per Second\n"
                               "Default is the maximum rate supported by the camera modes.\n"
-                              "Available options: 30, 15, 5",
+                              "Available options: 30, 25,15, 5",
                               1,
                               [&](const std::vector<char *> &args) {
                                   recording_rate_set = true;
                                   if (string_compare(args[0], "30") == 0)
                                   {
                                       recording_rate = K4A_FRAMES_PER_SECOND_30;
+                                  }
+                                  else if (string_compare(args[0], "25") == 0)
+                                  {
+                                      recording_rate = K4A_FRAMES_PER_SECOND_25;
                                   }
                                   else if (string_compare(args[0], "15") == 0)
                                   {
@@ -324,31 +324,26 @@ int main(int argc, char **argv)
                                   subordinate_delay_off_master_usec = (uint32_t)delay;
                               });
     cmd_parser.RegisterOption("-e|--exposure-control",
-                              "Set manual exposure value from 2 us to 200,000us for the RGB camera (default: \n"
-                              "auto exposure). This control also supports MFC settings of -11 to 1).",
+                              "Set manual exposure value from 100 us to 409500us for the RGB camera (default: \n"
+                              "auto exposure)).",
                               1,
                               [&](const std::vector<char *> &args) {
                                   int exposureValue = std::stoi(args[0]);
-                                  if (exposureValue >= -11 && exposureValue <= 1)
-                                  {
-                                      absoluteExposureValue = static_cast<int32_t>(exp2f((float)exposureValue) *
-                                                                                   1000000.0f);
-                                  }
-                                  else if (exposureValue >= 2 && exposureValue <= 200000)
+                                  if (exposureValue >= 100 && exposureValue <= 409500)
                                   {
                                       absoluteExposureValue = exposureValue;
                                   }
                                   else
                                   {
-                                      throw std::runtime_error("Exposure value range is 2 to 5s, or -11 to 1.");
+                                      throw std::runtime_error("Exposure value range is 100 to 409500");
                                   }
                               });
     cmd_parser.RegisterOption("-g|--gain",
-                              "Set cameras manual gain. The valid range is 0 to 255. (default: auto)",
+                              "Set cameras manual gain. The valid range is 1 to 255. (default: auto)",
                               1,
                               [&](const std::vector<char *> &args) {
                                   int gainSetting = std::stoi(args[0]);
-                                  if (gainSetting < 0 || gainSetting > 255)
+                                  if (gainSetting < 1 || gainSetting > 255)
                                   {
                                       throw std::runtime_error("Gain value must be between 0 and 255.");
                                   }

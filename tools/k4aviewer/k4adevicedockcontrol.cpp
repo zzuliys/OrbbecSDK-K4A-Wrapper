@@ -28,7 +28,7 @@ using namespace k4aviewer;
 
 namespace
 {
-constexpr std::chrono::milliseconds CameraPollingTimeout(2000);
+constexpr std::chrono::milliseconds CameraPollingTimeout(3000);
 constexpr std::chrono::milliseconds ImuPollingTimeout(2000);
 
 constexpr std::chrono::minutes SubordinateModeStartupTimeout(5);
@@ -49,6 +49,7 @@ void StopSensor(k4a::device *device,
     *started = false;
 }
 
+//从Sensor中取流
 template<typename T>
 bool PollSensor(const char *sensorFriendlyName,
                 k4a::device *device,
@@ -73,9 +74,13 @@ bool PollSensor(const char *sensorFriendlyName,
                 dataSource->NotifyObservers(data);
             }
             return true;
+        }else
+        {
+            errorMessage = "timed out!";
+            return true;
         }
 
-        errorMessage = "timed out!";
+
     }
     catch (const k4a::error &e)
     {
@@ -174,6 +179,7 @@ void K4ADeviceDockControl::ShowColorControlAutoButton(k4a_color_control_mode_t c
     ImGui::PopID();
 }
 
+//设置RGB 参数
 void K4ADeviceDockControl::ApplyColorSetting(k4a_color_control_command_t command, ColorSetting *cacheEntry)
 {
     try
@@ -198,34 +204,35 @@ void K4ADeviceDockControl::ApplyDefaultColorSettings()
     // However, the default settings are the same for all devices, so we just hardcode
     // them here.
     //
-    m_colorSettingsCache.ExposureTimeUs = { K4A_COLOR_CONTROL_MODE_AUTO, 15625 };
+    m_colorSettingsCache.ExposureTimeUs = { K4A_COLOR_CONTROL_MODE_AUTO, 20000 };
     ApplyColorSetting(K4A_COLOR_CONTROL_EXPOSURE_TIME_ABSOLUTE, &m_colorSettingsCache.ExposureTimeUs);
 
-    m_colorSettingsCache.WhiteBalance = { K4A_COLOR_CONTROL_MODE_AUTO, 4500 };
+    m_colorSettingsCache.WhiteBalance = { K4A_COLOR_CONTROL_MODE_AUTO, 4800 };
     ApplyColorSetting(K4A_COLOR_CONTROL_WHITEBALANCE, &m_colorSettingsCache.WhiteBalance);
 
-    m_colorSettingsCache.Brightness = { K4A_COLOR_CONTROL_MODE_MANUAL, 128 };
+    m_colorSettingsCache.Brightness = { K4A_COLOR_CONTROL_MODE_MANUAL, 29 };
     ApplyColorSetting(K4A_COLOR_CONTROL_BRIGHTNESS, &m_colorSettingsCache.Brightness);
 
-    m_colorSettingsCache.Contrast = { K4A_COLOR_CONTROL_MODE_MANUAL, 5 };
+    m_colorSettingsCache.Contrast = { K4A_COLOR_CONTROL_MODE_MANUAL, 48 };
     ApplyColorSetting(K4A_COLOR_CONTROL_CONTRAST, &m_colorSettingsCache.Contrast);
 
-    m_colorSettingsCache.Saturation = { K4A_COLOR_CONTROL_MODE_MANUAL, 32 };
+    m_colorSettingsCache.Saturation = { K4A_COLOR_CONTROL_MODE_MANUAL, 54 };
     ApplyColorSetting(K4A_COLOR_CONTROL_SATURATION, &m_colorSettingsCache.Saturation);
 
-    m_colorSettingsCache.Sharpness = { K4A_COLOR_CONTROL_MODE_MANUAL, 2 };
+    m_colorSettingsCache.Sharpness = { K4A_COLOR_CONTROL_MODE_MANUAL, 6 };
     ApplyColorSetting(K4A_COLOR_CONTROL_SHARPNESS, &m_colorSettingsCache.Sharpness);
 
-    m_colorSettingsCache.BacklightCompensation = { K4A_COLOR_CONTROL_MODE_MANUAL, 0 };
-    ApplyColorSetting(K4A_COLOR_CONTROL_BACKLIGHT_COMPENSATION, &m_colorSettingsCache.BacklightCompensation);
+    //m_colorSettingsCache.BacklightCompensation = { K4A_COLOR_CONTROL_MODE_MANUAL, 0 };
+    //ApplyColorSetting(K4A_COLOR_CONTROL_BACKLIGHT_COMPENSATION, &m_colorSettingsCache.BacklightCompensation);
 
-    m_colorSettingsCache.Gain = { K4A_COLOR_CONTROL_MODE_MANUAL, 0 };
+    m_colorSettingsCache.Gain = { K4A_COLOR_CONTROL_MODE_MANUAL, 50 };
     ApplyColorSetting(K4A_COLOR_CONTROL_GAIN, &m_colorSettingsCache.Gain);
 
     m_colorSettingsCache.PowerlineFrequency = { K4A_COLOR_CONTROL_MODE_MANUAL, 2 };
     ApplyColorSetting(K4A_COLOR_CONTROL_POWERLINE_FREQUENCY, &m_colorSettingsCache.PowerlineFrequency);
 }
 
+//获取RGB参数
 void K4ADeviceDockControl::ReadColorSetting(k4a_color_control_command_t command, ColorSetting *cacheEntry)
 {
     try
@@ -277,14 +284,14 @@ bool K4ADeviceDockControl::DeviceIsStarted() const
 K4ADeviceDockControl::K4ADeviceDockControl(k4a::device &&device) : m_device(std::move(device))
 {
     ApplyDefaultConfiguration();
-
+    //序列号
     m_deviceSerialNumber = m_device.get_serialnum();
     m_windowTitle = m_deviceSerialNumber + ": Configuration";
 
     m_microphone = K4AAudioManager::Instance().GetMicrophoneForDevice(m_deviceSerialNumber);
 
     LoadColorSettingsCache();
-    RefreshSyncCableStatus();
+    //RefreshSyncCableStatus(); 
 }
 
 K4ADeviceDockControl::~K4ADeviceDockControl()
@@ -292,6 +299,7 @@ K4ADeviceDockControl::~K4ADeviceDockControl()
     Stop();
 }
 
+//显示序列号
 K4ADockControlStatus K4ADeviceDockControl::Show()
 {
     std::stringstream labelBuilder;
@@ -343,6 +351,7 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         const bool depthSettingsEditable = !deviceIsStarted && m_config.EnableDepthCamera;
         auto *pDepthMode = reinterpret_cast<int *>(&m_config.DepthMode);
         ImGui::Text("Depth mode");
+
         depthModeUpdated |= ImGuiExtensions::K4ARadioButton("NFOV Binned",
                                                             pDepthMode,
                                                             K4A_DEPTH_MODE_NFOV_2X2BINNED,
@@ -362,6 +371,12 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                                                             pDepthMode,
                                                             K4A_DEPTH_MODE_WFOV_UNBINNED,
                                                             depthSettingsEditable);
+        
+        //// New line
+        //depthModeUpdated |= ImGuiExtensions::K4ARadioButton("VGA-640x480  ",
+        //                                                    pDepthMode,
+        //                                                    K4A_DEPTH_MODE_640x480,
+        //                                                    depthSettingsEditable);
         // New line
         depthModeUpdated |=
             ImGuiExtensions::K4ARadioButton("Passive IR", pDepthMode, K4A_DEPTH_MODE_PASSIVE_IR, depthSettingsEditable);
@@ -393,9 +408,9 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         ImGui::SameLine();
         colorFormatUpdated |=
             ImGuiExtensions::K4ARadioButton("MJPG", pColorFormat, K4A_IMAGE_FORMAT_COLOR_MJPG, colorSettingsEditable);
-        ImGui::SameLine();
-        colorFormatUpdated |=
-            ImGuiExtensions::K4ARadioButton("NV12", pColorFormat, K4A_IMAGE_FORMAT_COLOR_NV12, colorSettingsEditable);
+        //ImGui::SameLine();
+        //colorFormatUpdated |=
+        //    ImGuiExtensions::K4ARadioButton("NV12", pColorFormat, K4A_IMAGE_FORMAT_COLOR_NV12, colorSettingsEditable);
         ImGui::SameLine();
         colorFormatUpdated |=
             ImGuiExtensions::K4ARadioButton("YUY2", pColorFormat, K4A_IMAGE_FORMAT_COLOR_YUY2, colorSettingsEditable);
@@ -403,8 +418,10 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         // Uncompressed formats are only supported at 720p.
         //
         const char *imageFormatHelpMessage = "Not supported in NV12 or YUY2 mode!";
-        const bool imageFormatSupportsHighResolution = m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_NV12 &&
-                                                       m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_YUY2;
+   /*     const bool imageFormatSupportsHighResolution = m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_NV12 &&
+                                                       m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_YUY2;*/
+
+         const bool imageFormatSupportsHighResolution = true;
         if (colorFormatUpdated || m_firstRun)
         {
             if (!imageFormatSupportsHighResolution)
@@ -430,6 +447,7 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                                                                   colorSettingsEditable &&
                                                                       imageFormatSupportsHighResolution);
         ImGuiExtensions::K4AShowTooltip(imageFormatHelpMessage, !imageFormatSupportsHighResolution);
+
         // New line
         colorResolutionUpdated |= ImGuiExtensions::K4ARadioButton("1440p",
                                                                   pColorResolution,
@@ -448,6 +466,7 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         ImGui::Text("4:3");
         ImGui::Indent();
 
+        /*
         colorResolutionUpdated |= ImGuiExtensions::K4ARadioButton("1536p",
                                                                   pColorResolution,
                                                                   K4A_COLOR_RESOLUTION_1536P,
@@ -461,6 +480,19 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                                                                   K4A_COLOR_RESOLUTION_3072P,
                                                                   colorSettingsEditable &&
                                                                       imageFormatSupportsHighResolution);
+        ImGuiExtensions::K4AShowTooltip(imageFormatHelpMessage, !imageFormatSupportsHighResolution);
+        
+
+        colorResolutionUpdated |= ImGuiExtensions::K4ARadioButton(" 480p",
+                                                                  pColorResolution,
+                                                                  K4A_COLOR_RESOLUTION_480P,
+                                                                  colorSettingsEditable);
+        */
+
+         colorResolutionUpdated |= ImGuiExtensions::K4ARadioButton(" 960p",
+                                                                  pColorResolution,
+                                                                  K4A_COLOR_RESOLUTION_960P,
+                                                                  colorSettingsEditable);
         ImGuiExtensions::K4AShowTooltip(imageFormatHelpMessage, !imageFormatSupportsHighResolution);
 
         ImGui::Unindent();
@@ -489,8 +521,8 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                 ImGui::PushItemWidth(ImGui::CalcItemWidth() * SliderScaleFactor);
                 if (ImGuiExtensions::K4ASliderFloat("Exposure Time",
                                                     &valueFloat,
-                                                    488.f,
-                                                    1000000.f,
+                                                    100.f,
+                                                    200000.f,
                                                     "%.0f us",
                                                     8.0f,
                                                     cacheEntry->Mode == K4A_COLOR_CONTROL_MODE_MANUAL))
@@ -511,8 +543,8 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                 ImGui::PushItemWidth(ImGui::CalcItemWidth() * SliderScaleFactor);
                 if (ImGuiExtensions::K4ASliderInt("White Balance",
                                                   &cacheEntry->Value,
-                                                  2500,
-                                                  12500,
+                                                  2000,
+                                                  9000,
                                                   "%d K",
                                                   cacheEntry->Mode == K4A_COLOR_CONTROL_MODE_MANUAL))
                 {
@@ -533,47 +565,47 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
 
         ShowColorControl(K4A_COLOR_CONTROL_BRIGHTNESS, &m_colorSettingsCache.Brightness,
             [](ColorSetting *cacheEntry) {
-                return ImGui::SliderInt("Brightness", &cacheEntry->Value, 0, 255) ?
+                return ImGui::SliderInt("Brightness", &cacheEntry->Value, 1, 127) ?
                     ColorControlAction::SetManual :
                     ColorControlAction::None;
         });
 
         ShowColorControl(K4A_COLOR_CONTROL_CONTRAST, &m_colorSettingsCache.Contrast,
             [](ColorSetting *cacheEntry) {
-                return ImGui::SliderInt("Contrast", &cacheEntry->Value, 0, 10) ?
+                return ImGui::SliderInt("Contrast", &cacheEntry->Value, 1, 60) ?
                     ColorControlAction::SetManual :
                     ColorControlAction::None;
         });
 
         ShowColorControl(K4A_COLOR_CONTROL_SATURATION, &m_colorSettingsCache.Saturation,
             [](ColorSetting *cacheEntry) {
-                return ImGui::SliderInt("Saturation", &cacheEntry->Value, 0, 63) ?
+                return ImGui::SliderInt("Saturation", &cacheEntry->Value, 1, 80) ?
                     ColorControlAction::SetManual :
                     ColorControlAction::None;
         });
 
         ShowColorControl(K4A_COLOR_CONTROL_SHARPNESS, &m_colorSettingsCache.Sharpness,
             [](ColorSetting *cacheEntry) {
-                return ImGui::SliderInt("Sharpness", &cacheEntry->Value, 0, 4) ?
+                return ImGui::SliderInt("Sharpness", &cacheEntry->Value, 1, 15) ?
                     ColorControlAction::SetManual :
                     ColorControlAction::None;
         });
 
         ShowColorControl(K4A_COLOR_CONTROL_GAIN, &m_colorSettingsCache.Gain,
             [](ColorSetting *cacheEntry) {
-                return ImGui::SliderInt("Gain", &cacheEntry->Value, 0, 255) ?
+                return ImGui::SliderInt("Gain", &cacheEntry->Value, 1, 240) ?
                     ColorControlAction::SetManual :
                     ColorControlAction::None;
         });
 
         ImGui::PopItemWidth();
 
-        ShowColorControl(K4A_COLOR_CONTROL_BACKLIGHT_COMPENSATION, &m_colorSettingsCache.BacklightCompensation,
-            [](ColorSetting *cacheEntry) {
-                return ImGui::Checkbox("Backlight Compensation", reinterpret_cast<bool *>(&cacheEntry->Value)) ?
-                    ColorControlAction::SetManual :
-                    ColorControlAction::None;
-         });
+        //ShowColorControl(K4A_COLOR_CONTROL_BACKLIGHT_COMPENSATION, &m_colorSettingsCache.BacklightCompensation,
+        //    [](ColorSetting *cacheEntry) {
+        //        return ImGui::Checkbox("Backlight Compensation", reinterpret_cast<bool *>(&cacheEntry->Value)) ?
+        //            ColorControlAction::SetManual :
+        //            ColorControlAction::None;
+        // });
 
         ShowColorControl(K4A_COLOR_CONTROL_POWERLINE_FREQUENCY, &m_colorSettingsCache.PowerlineFrequency,
             [](ColorSetting *cacheEntry) {
@@ -612,6 +644,11 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
             //
             m_config.Framerate = K4A_FRAMES_PER_SECOND_15;
         }
+        else if (m_config.ColorResolution == K4A_COLOR_RESOLUTION_2160P ||
+                 m_config.ColorResolution == K4A_COLOR_RESOLUTION_1440P)
+        {
+            m_config.Framerate = K4A_FRAMES_PER_SECOND_15;
+        }
     }
     if (depthModeUpdated || m_firstRun)
     {
@@ -622,10 +659,14 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
     }
 
     const bool supports30fps = !(m_config.EnableColorCamera &&
-                                 m_config.ColorResolution == K4A_COLOR_RESOLUTION_3072P) &&
+                                 (m_config.ColorResolution == K4A_COLOR_RESOLUTION_3072P ||
+                                  m_config.ColorResolution == K4A_COLOR_RESOLUTION_2160P ||
+                                  m_config.ColorResolution == K4A_COLOR_RESOLUTION_1440P)) &&
                                !(m_config.EnableDepthCamera && m_config.DepthMode == K4A_DEPTH_MODE_WFOV_UNBINNED);
 
     const bool enableFramerate = !deviceIsStarted && (m_config.EnableColorCamera || m_config.EnableDepthCamera);
+
+    const bool supports25fps = !(m_config.EnableDepthCamera && m_config.DepthMode == K4A_DEPTH_MODE_WFOV_UNBINNED);
 
     ImGui::Text("Framerate");
     auto *pFramerate = reinterpret_cast<int *>(&m_config.Framerate);
@@ -634,17 +675,26 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                                                         pFramerate,
                                                         K4A_FRAMES_PER_SECOND_30,
                                                         enableFramerate && supports30fps);
-    ImGuiExtensions::K4AShowTooltip("Not supported with WFOV Unbinned or 3072p!", !supports30fps);
+    ImGuiExtensions::K4AShowTooltip("Not supported with WFOV Unbinned or 3072p 2160p 1440p!", !supports30fps);
     ImGui::SameLine();
+
+    framerateUpdated |= ImGuiExtensions::K4ARadioButton("25 FPS",
+                                                        pFramerate,
+                                                        K4A_FRAMES_PER_SECOND_25,
+                                                        enableFramerate && supports25fps);
+    ImGui::SameLine();
+
     framerateUpdated |=
         ImGuiExtensions::K4ARadioButton("15 FPS", pFramerate, K4A_FRAMES_PER_SECOND_15, enableFramerate);
     ImGui::SameLine();
     framerateUpdated |= ImGuiExtensions::K4ARadioButton(" 5 FPS", pFramerate, K4A_FRAMES_PER_SECOND_5, enableFramerate);
 
-    ImGuiExtensions::K4ACheckbox("Disable streaming LED", &m_config.DisableStreamingIndicator, !deviceIsStarted);
+   
+    //ImGuiExtensions::K4ACheckbox("Disable streaming LED", &m_config.DisableStreamingIndicator, !deviceIsStarted);
 
     ImGui::Separator();
 
+    
     const bool imuSupported = m_config.EnableColorCamera || m_config.EnableDepthCamera;
     m_config.EnableImu &= imuSupported;
     ImGuiExtensions::K4ACheckbox("Enable IMU", &m_config.EnableImu, !deviceIsStarted && imuSupported);
@@ -660,11 +710,14 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
     else
     {
         m_config.EnableMicrophone = false;
-        ImGui::Text("Microphone not detected!");
+        //ImGui::Text("Microphone not detected!");
     }
 
     ImGui::Separator();
+    
 
+    //////////////////////////////////////////////////
+    
     if (ImGui::TreeNode("Internal Sync"))
     {
         ImGuiExtensions::K4ACheckbox("Synchronized images only",
@@ -691,6 +744,9 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
             case K4A_FRAMES_PER_SECOND_30:
                 maxDepthDelay = std::micro::den / 30;
                 break;
+            case K4A_FRAMES_PER_SECOND_25:
+                maxDepthDelay = std::micro::den / 25;
+                break;
             case K4A_FRAMES_PER_SECOND_15:
                 maxDepthDelay = std::micro::den / 15;
                 break;
@@ -714,6 +770,8 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
     }
     if (ImGui::TreeNode("External Sync"))
     {
+        /*
+        //TODO: Mega 获取不到连接状态
         ImGui::Text("Sync cable state");
         ImGuiExtensions::K4ARadioButton("In", m_syncInConnected, false);
         ImGui::SameLine();
@@ -723,9 +781,10 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         {
             RefreshSyncCableStatus();
         }
-
+        */
+        
         const char *syncModesSupportedTooltip = "Requires at least one camera and a connected sync cable!";
-        const bool syncModesSupported = (m_syncInConnected || m_syncOutConnected) &&
+        const bool syncModesSupported = //(m_syncInConnected || m_syncOutConnected) &&
                                         (m_config.EnableColorCamera || m_config.EnableDepthCamera);
         if (!syncModesSupported)
         {
@@ -734,7 +793,7 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
 
         auto *pSyncMode = reinterpret_cast<int *>(&m_config.WiredSyncMode);
         ImGuiExtensions::K4ARadioButton("Standalone", pSyncMode, K4A_WIRED_SYNC_MODE_STANDALONE, !deviceIsStarted);
-        ImGui::SameLine();
+        //ImGui::SameLine();
         ImGuiExtensions::K4ARadioButton("Master",
                                         pSyncMode,
                                         K4A_WIRED_SYNC_MODE_MASTER,
@@ -759,7 +818,9 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         ImGui::PopItemWidth();
 
         ImGui::TreePop();
+        
     }
+    /////////////////////////////////////////////////////////////////////////////
 
     ImGui::Separator();
 
@@ -860,17 +921,20 @@ void K4ADeviceDockControl::Start()
     const bool enableCameras = m_config.EnableColorCamera || m_config.EnableDepthCamera;
     if (enableCameras)
     {
+        //开相机
         bool camerasStarted = StartCameras();
+        //开Imu
         if (camerasStarted && m_config.EnableImu)
         {
             StartImu();
         }
     }
-    if (m_config.EnableMicrophone)
-    {
-        StartMicrophone();
-    }
-
+    //开麦克风
+    //if (m_config.EnableMicrophone)
+    //{
+    //    StartMicrophone();
+    //}
+    //设置Viewer 不同的窗口类型,如2D显示，3D显示
     SetViewType(K4AWindowSet::ViewType::Normal);
     m_paused = false;
 }
@@ -881,8 +945,9 @@ void K4ADeviceDockControl::Stop()
 
     StopCameras();
     StopImu();
-    StopMicrophone();
+    //StopMicrophone();
 }
+
 
 bool K4ADeviceDockControl::StartCameras()
 {
@@ -1065,7 +1130,7 @@ void K4ADeviceDockControl::SetViewType(K4AWindowSet::ViewType viewType)
             K4AViewerErrorManager::Instance().SetErrorStatus(errorBuilder.str());
         }
     }
-
+    
     switch (viewType)
     {
     case K4AWindowSet::ViewType::Normal:
@@ -1083,6 +1148,7 @@ void K4ADeviceDockControl::SetViewType(K4AWindowSet::ViewType viewType)
     case K4AWindowSet::ViewType::PointCloudViewer:
         try
         {
+            //获取标定参数
             k4a::calibration calib = m_device.get_calibration(m_config.DepthMode, m_config.ColorResolution);
             bool rgbPointCloudAvailable = m_config.EnableColorCamera &&
                                           m_config.ColorFormat == K4A_IMAGE_FORMAT_COLOR_BGRA32;

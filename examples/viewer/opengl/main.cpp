@@ -88,6 +88,14 @@ int main()
                 const k4a::image depthImage = capture.get_depth_image();
                 const k4a::image colorImage = capture.get_color_image();
 
+                const uint8_t *depthBuff = depthImage.get_buffer();
+                const uint8_t *colorBuff = colorImage.get_buffer();
+                if (depthBuff == nullptr || colorBuff == nullptr)
+                {
+                    printf("depth or color image is null\n");
+                    continue;
+                }
+
                 // If we hadn't set synchronized_images_only=true above, we'd need to do
                 // if (depthImage) { /* stuff */ } else { /* ignore the image */ } here.
                 //
@@ -119,6 +127,7 @@ int main()
             //
             window.EndFrame();
         }
+        dev.stop_cameras();
     }
     catch (const std::exception &e)
     {

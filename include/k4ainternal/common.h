@@ -51,6 +51,9 @@ inline static uint32_t k4a_convert_fps_to_uint(k4a_fps_t fps)
     case K4A_FRAMES_PER_SECOND_15:
         fps_int = 15;
         break;
+    case K4A_FRAMES_PER_SECOND_25:
+        fps_int = 25;
+        break;
     case K4A_FRAMES_PER_SECOND_30:
         fps_int = 30;
         break;
@@ -78,6 +81,19 @@ inline static bool k4a_convert_resolution_to_width_height(k4a_color_resolution_t
         width = 1920;
         height = 1080;
         break;
+    case K4A_COLOR_RESOLUTION_480P:
+        width = 640;
+        height = 480;
+        break;
+    case K4A_COLOR_RESOLUTION_960P:
+        width = 1280;
+        height = 960;
+        break;
+    case K4A_COLOR_RESOLUTION_1024X768:
+        width = 1024;
+        height = 768;
+        break;
+
     case K4A_COLOR_RESOLUTION_1440P:
         width = 2560;
         height = 1440;
@@ -132,6 +148,10 @@ inline static bool k4a_convert_depth_mode_to_width_height(k4a_depth_mode_t mode,
     case K4A_DEPTH_MODE_PASSIVE_IR:
         width = 1024;
         height = 1024;
+        break;
+    case K4A_DEPTH_MODE_640x480:
+        width = 640;
+        height = 480;
         break;
     default:
         return false;
