@@ -1,4 +1,5 @@
 # OrbbecSDK-K4A-Wrapper
+
 ![stability](https://img.shields.io/badge/stability-unstable-yellow)
 
 This branch is contain the K4A wrapper for OrbbecSDK. It's mean that user can use this library to develop the application with K4A API, but use to control the Orbbec camera.
@@ -22,6 +23,7 @@ Orbbec Femto Mega: Win10+、Ubuntu20.04+, x64
 
 ```bash
 git clone https://github.com/orbbec/OrbbecSDK-K4A-Wrapper.git
+# Please make sure you have switched to the branch with the prefix "orb/", for example: git checkout orb/feature/1.1.x.
 git submodule update --init --recursive
 ```
 
