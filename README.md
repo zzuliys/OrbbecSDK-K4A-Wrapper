@@ -23,7 +23,7 @@ Orbbec Femto Mega: Win10+、Ubuntu20.04+, x64
 
 ```bash
 git clone https://github.com/orbbec/OrbbecSDK-K4A-Wrapper.git
-# Please make sure you have switched to the branch with the prefix "orb/", for example: git checkout orb/feature/1.1.x.
+# Please make sure you have switched to the branch with the prefix "ob/", for example: git checkout ob/feature/1.1.x.
 git submodule update --init --recursive
 ```
 
