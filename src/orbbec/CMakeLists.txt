@@ -55,6 +55,16 @@ target_link_libraries(k4a PRIVATE
     OrbbecSDK::OrbbecSDK
 	)
 
+get_target_property(OrbbecSDK_DLL OrbbecSDK::OrbbecSDK IMPORTED_LOCATION)
+get_target_property(K4A_OUTPUT_DIR k4a RUNTIME_OUTPUT_DIRECTORY)
+message(STATUS "OrbbecSDK_DLL: ${OrbbecSDK_DLL}")
+message(STATUS "K4A_OUTPUT_DIR: ${K4A_OUTPUT_DIR}")
+add_custom_command(TARGET k4a
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy
+                             ${OrbbecSDK_DLL}
+                             ${K4A_OUTPUT_DIR}/$<CONFIGURATION>)
+
 # Define alias for k4a
 add_library(k4a::k4a ALIAS k4a)
 

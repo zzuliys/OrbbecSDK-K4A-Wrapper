@@ -285,7 +285,6 @@ k4a_result_t k4a_device_open(uint32_t index, k4a_device_t *device_handle)
         }
         else
         {
-            // §µ?
             ob_set_device_changed_callback(device->mContext, on_device_changed_callback, NULL, &obError);
         }
     }
