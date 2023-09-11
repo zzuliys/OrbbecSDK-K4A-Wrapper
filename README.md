@@ -17,7 +17,7 @@ The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source c
 
 ## Supported camera and platform
 
-Orbbec Femto Mega: Win10+、Ubuntu20.04+, x64
+Orbbec Femto Mega: Windows10+, Ubuntu20.04+; x64
 
 *Other Orbbec cameras and platforms without test, don't use it in production environment.*
 

@@ -11,6 +11,7 @@ add_subdirectory(OrbbecSDK)
 add_library(k4a SHARED
             ob_k4a_impl.c
             dll_main.c
+            ob_type_helper.cpp
             ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
 # Generate k4a_export.h
