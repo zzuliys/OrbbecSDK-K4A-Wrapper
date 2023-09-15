@@ -41,7 +41,7 @@ extern "C" {
 char K4A_ENV_VAR_LOG_TO_A_FILE[] = K4A_ENABLE_LOG_TO_A_FILE;
 // char K4A_ENV_VAR_LOG_TO_A_FILE[] = "";
 #define MAX_FIREWARE_VERSION_LEN 64
-#define UNREFERENCED_VALUE(P) (P)
+#define UNREFERENCED_VALUE(P) ((void)P)
 
 #define MAX_JSON_SIZE 1024 * 10
 #define ORBBEC_MEGA_PID 0x0669
@@ -2029,7 +2029,7 @@ k4a_buffer_result_t k4a_device_get_serialnum(k4a_device_t device_handle,
     size_t caller_buffer_size = 0;
     caller_buffer_size = *serial_number_size;
 
-    int snLen = (int)strlen(sn);
+    size_t snLen = strlen(sn);
     *serial_number_size = snLen;
 
     if (caller_buffer_size <= snLen || serial_number == NULL)
@@ -2051,7 +2051,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
         return K4A_RESULT_FAILED;
     }
 
-    int orbbec_version_len = (int)strlen(orbbec_version);
+    size_t orbbec_version_len = strlen(orbbec_version);
     if (orbbec_version_len >= MAX_FIREWARE_VERSION_LEN)
     {
         LOG_WARNING("orbbec_version_len overflow ", 0);
@@ -2061,7 +2061,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
     char split_version[MAX_FIREWARE_VERSION_LEN] = { 0 };
     int count = 0;
 
-    for (int i = 0; i < orbbec_version_len; i++)
+    for (size_t i = 0; i < orbbec_version_len; i++)
     {
         if (orbbec_version[i] >= '0' && orbbec_version[i] <= '9')
         {

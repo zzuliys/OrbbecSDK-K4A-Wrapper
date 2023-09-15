@@ -158,7 +158,7 @@ K4ADockControlStatus K4ARecordingDockControl::Show()
     ImGui::Text("Depth/color delay (us): %d", m_depthDelayOffColorUsec);
     ImGui::Text("Sync mode:              %s", m_wiredSyncModeLabel.c_str());
     ImGui::Text("Subordinate delay (us): %d", m_subordinateDelayOffMasterUsec);
-    ImGui::Text("Start timestamp offset: %llu", m_startTimestampOffsetUsec);
+    ImGui::Text("Start timestamp offset: %lu", m_startTimestampOffsetUsec);
     ImGui::Text("Recording Length (us):  %lu", m_recordingLengthUsec);
     ImGui::Separator();
 
