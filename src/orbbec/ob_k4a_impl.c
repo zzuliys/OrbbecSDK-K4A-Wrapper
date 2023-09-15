@@ -2030,7 +2030,7 @@ k4a_buffer_result_t k4a_device_get_serialnum(k4a_device_t device_handle,
     caller_buffer_size = *serial_number_size;
 
     size_t snLen = strlen(sn);
-    *serial_number_size = snLen;
+    *serial_number_size = snLen+1;
 
     if (caller_buffer_size <= snLen || serial_number == NULL)
     {
