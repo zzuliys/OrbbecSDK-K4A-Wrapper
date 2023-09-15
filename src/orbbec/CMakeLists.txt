@@ -69,6 +69,9 @@ add_custom_command(TARGET k4a
 # Define alias for k4a
 add_library(k4a::k4a ALIAS k4a)
 
+set(K4A_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(K4A_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(K4A_VERSION_PATCH "1")
 set_target_properties(
     k4a
     PROPERTIES
