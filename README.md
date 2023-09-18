@@ -15,7 +15,7 @@ Also user can use this library to replace native K4A library in your application
 
 The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source code in [k4a.c](./src/sdk/k4a.c) is the implementation of K4A API. We have reimplemented the K4A API in [ob_k4a_impl.c](./src/orbbec/ob_k4a_impl.c) with OrbbecSDK, and keep the same effect as the original K4A API. Therefore, all functions called on user's side will be redirected to the OrbbecSDK, and user can access the Orbbec camera like the K4A device.
 
-![OrbbecSDK-K4A-Wrapper](src\orbbec\docs\resource\OrbbecSDK-K4A-Wrapper.png)
+![OrbbecSDK-K4A-Wrapper](src/orbbec/docs/resource/OrbbecSDK-K4A-Wrapper.png)
 
 ## Supported camera and platform
 
