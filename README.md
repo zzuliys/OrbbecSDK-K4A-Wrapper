@@ -15,6 +15,8 @@ Also user can use this library to replace native K4A library in your application
 
 The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source code in [k4a.c](./src/sdk/k4a.c) is the implementation of K4A API. We have reimplemented the K4A API in [ob_k4a_impl.c](./src/orbbec/ob_k4a_impl.c) with OrbbecSDK, and keep the same effect as the original K4A API. Therefore, all functions called on user's side will be redirected to the OrbbecSDK, and user can access the Orbbec camera like the K4A device.
 
+![OrbbecSDK-K4A-Wrapper](src\orbbec\docs\resource\OrbbecSDK-K4A-Wrapper.png)
+
 ## Supported camera and platform
 
 Orbbec Femto Mega: Windows10+, Ubuntu20.04+; x64
@@ -62,3 +64,4 @@ Connect the Orbbec camera to your PC, and run the k4aviewer.
 ## Attention
 
 1. The library of this branch is not support the K4A device, please use the [Native K4A](https://github.com/microsoft/Azure-Kinect-Sensor-SDK) library to access the K4A device.
+2. The OrbbecSDK K4A Wrapper is aim to provide the same API as the K4A, but it's not full API for OrbbecSDK and feature for Orbbec camera. If you want to use the full feature of Orbbec camera, please use the [OrbbecSDK](https://github.com/orbbec/OrbbecSDK) directly.

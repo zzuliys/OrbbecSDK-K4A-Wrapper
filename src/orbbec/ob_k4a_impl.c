@@ -575,7 +575,7 @@ k4a_result_t k4a_device_start_imu(k4a_device_t device_handle)
         }
 
         ob_sensor_start(accel_sensor, profile, ob_accel_frame, device_handle, &ob_err);
-        // CHECK_OB_ERROR(ob_err);
+        CHECK_OB_ERROR(ob_err);
         ob_delete_stream_profile(profile, &ob_err);
         if (ob_err != NULL)
         {
