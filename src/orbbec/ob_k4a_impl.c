@@ -253,7 +253,7 @@ k4a_result_t k4a_device_open(uint32_t index, k4a_device_t *device_handle)
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
 
     // sync devices timer with host
-    ob_enable_multi_device_sync(ob_ctx, 60000, &ob_err);
+    ob_enable_device_clock_sync(ob_ctx, 60000, &ob_err);
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
 
     pid = ob_device_list_get_device_pid(dev_list, index, &ob_err);
@@ -1609,8 +1609,8 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
     if (pid == ORBBEC_MEGA_PID)
     {
 
-        OB_MULTI_DEVICE_SYNC_CONFIG ob_config;
-        memset(&ob_config, 0, sizeof(OB_MULTI_DEVICE_SYNC_CONFIG));
+        OB_DEVICE_SYNC_CONFIG ob_config;
+        memset(&ob_config, 0, sizeof(OB_DEVICE_SYNC_CONFIG));
         uint32_t len;
 
         ob_device_get_structured_data(device->dev, OB_STRUCT_MULTI_DEVICE_SYNC_CONFIG, &ob_config, &len, &ob_err);
@@ -1619,16 +1619,16 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
         uint32_t base_delay = 0;
         if (config->wired_sync_mode == K4A_WIRED_SYNC_MODE_MASTER)
         {
-            ob_config.syncMode = OB_SYNC_ONLY_MCU_MODE;
+            ob_config.syncMode = OB_SYNC_MODE_PRIMARY_MCU_TRIGGER;
         }
         else if (config->wired_sync_mode == K4A_WIRED_SYNC_MODE_SUBORDINATE)
         {
-            ob_config.syncMode = OB_SYNC_ONLINE_SLAVE_MODE;
+            ob_config.syncMode = OB_SYNC_MODE_SECONDARY;
             base_delay = config->subordinate_delay_off_master_usec;
         }
         else
         {
-            ob_config.syncMode = OB_SYNC_SINGLE_MODE;
+            ob_config.syncMode = OB_SYNC_MODE_STANDALONE;
         }
 
         if (config->depth_delay_off_color_usec > 0)

@@ -122,6 +122,9 @@ int64_t k4a_unittest_get_max_sync_delay_ms(k4a_fps_t fps)
     case K4A_FRAMES_PER_SECOND_30:
         max_delay = 110;
         break;
+    case K4A_FRAMES_PER_SECOND_25:
+        max_delay = 132;
+        break;
     }
     return max_delay;
 }

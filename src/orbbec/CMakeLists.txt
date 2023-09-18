@@ -5,7 +5,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(frame_queue)
 add_subdirectory(imu_sync)
 
-add_subdirectory(OrbbecSDK)
+option(USER_LOCAL_ORBBECSDK "Use local OrbbecSDK" ON)  # set to OFF for release branch
+if(USER_LOCAL_ORBBECSDK)
+    set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK_local)
+else()
+    set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK)
+endif()
+
+add_subdirectory(${OrbbecSDK_DIR})
 
 # Create K4A library
 add_library(k4a SHARED
