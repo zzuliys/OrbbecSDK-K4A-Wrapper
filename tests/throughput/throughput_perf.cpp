@@ -110,6 +110,9 @@ static const char *get_string_from_color_format(k4a_image_format_t format)
     case K4A_IMAGE_FORMAT_CUSTOM:
         return "K4A_IMAGE_FORMAT_CUSTOM";
         break;
+    default:
+        return "K4A_IMAGE_FORMAT_UNKNOWN";
+        break;
     }
     assert(0);
     return "K4A_IMAGE_FORMAT_UNKNOWN";
@@ -140,6 +143,9 @@ static const char *get_string_from_color_resolution(k4a_color_resolution_t resol
     case K4A_COLOR_RESOLUTION_3072P:
         return "4096 * 3072 4:3";
         break;
+    default:
+        return "Unknown resolution";
+        break;
     }
     assert(0);
     return "Unknown resolution";
@@ -166,6 +172,9 @@ static const char *get_string_from_depth_mode(k4a_depth_mode_t mode)
         break;
     case K4A_DEPTH_MODE_PASSIVE_IR:
         return "K4A_DEPTH_MODE_PASSIVE_IR";
+        break;
+    default:
+        return "Unknown Depth";
         break;
     }
     assert(0);
