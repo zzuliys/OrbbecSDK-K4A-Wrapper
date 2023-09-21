@@ -115,7 +115,7 @@ static const char *get_string_from_color_format(k4a_image_format_t format)
         break;
     }
     assert(0);
-    return "K4A_IMAGE_FORMAT_UNKNOWN";
+    // return "K4A_IMAGE_FORMAT_UNKNOWN";
 }
 
 static const char *get_string_from_color_resolution(k4a_color_resolution_t resolution)
@@ -148,7 +148,7 @@ static const char *get_string_from_color_resolution(k4a_color_resolution_t resol
         break;
     }
     assert(0);
-    return "Unknown resolution";
+    // return "Unknown resolution";
 }
 
 static const char *get_string_from_depth_mode(k4a_depth_mode_t mode)
@@ -178,7 +178,7 @@ static const char *get_string_from_depth_mode(k4a_depth_mode_t mode)
         break;
     }
     assert(0);
-    return "Unknown Depth";
+    // return "Unknown Depth";
 }
 
 static int _throughput_imu_thread(void *param)
