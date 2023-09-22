@@ -27,10 +27,10 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/include/k4a/k4aversion.h"
     )
 
-configure_file(
-    "${K4A_INCLUDE_DIR}/k4a/k4aversion.h.in"
-    "${K4A_INCLUDE_DIR}/k4a/k4aversion.h"
-    )
+# configure_file(
+#     "${K4A_INCLUDE_DIR}/k4a/k4aversion.h.in"
+#     "${K4A_INCLUDE_DIR}/k4a/k4aversion.h"
+#     )
 
 # Include ${CMAKE_CURRENT_BINARY_DIR}/version.rc in the target's sources
 # to embed version information

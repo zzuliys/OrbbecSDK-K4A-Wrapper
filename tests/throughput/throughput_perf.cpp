@@ -110,12 +110,9 @@ static const char *get_string_from_color_format(k4a_image_format_t format)
     case K4A_IMAGE_FORMAT_CUSTOM:
         return "K4A_IMAGE_FORMAT_CUSTOM";
         break;
-    default:
-        return "K4A_IMAGE_FORMAT_UNKNOWN";
-        break;
     }
     assert(0);
-    // return "K4A_IMAGE_FORMAT_UNKNOWN";
+    return "K4A_IMAGE_FORMAT_UNKNOWN";
 }
 
 static const char *get_string_from_color_resolution(k4a_color_resolution_t resolution)
@@ -143,12 +140,15 @@ static const char *get_string_from_color_resolution(k4a_color_resolution_t resol
     case K4A_COLOR_RESOLUTION_3072P:
         return "4096 * 3072 4:3";
         break;
-    default:
-        return "Unknown resolution";
-        break;
+    case K4A_COLOR_RESOLUTION_480P:
+        return "640 * 480 4:3";
+    case K4A_COLOR_RESOLUTION_960P:
+        return "1280 * 960 4:3";
+    case K4A_COLOR_RESOLUTION_1024X768:
+        return "1024 * 768";
     }
     assert(0);
-    // return "Unknown resolution";
+    return "Unknown resolution";
 }
 
 static const char *get_string_from_depth_mode(k4a_depth_mode_t mode)
@@ -173,12 +173,15 @@ static const char *get_string_from_depth_mode(k4a_depth_mode_t mode)
     case K4A_DEPTH_MODE_PASSIVE_IR:
         return "K4A_DEPTH_MODE_PASSIVE_IR";
         break;
-    default:
-        return "Unknown Depth";
+    case K4A_DEPTH_MODE_640x480:
+        return "K4A_DEPTH_MODE_640x480";
+        break;
+    case K4A_DEPTH_MODE_320x240:
+        return "K4A_DEPTH_MODE_320x240";
         break;
     }
     assert(0);
-    // return "Unknown Depth";
+    return "Unknown Depth";
 }
 
 static int _throughput_imu_thread(void *param)
