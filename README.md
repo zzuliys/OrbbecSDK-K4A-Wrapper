@@ -41,10 +41,11 @@ git submodule update --init --recursive
 
 ```powershell
 cd OrbbecSDK-K4A-Wrapper
-mkdir build && cd build
+mkdir build
+cd build
 cmake .. -G Ninja
-cmake --build .
-cmake --install .
+ninja
+ninja install
 ```
 
 * Linux
@@ -52,9 +53,9 @@ cmake --install .
 ```bash
 cd OrbbecSDK-K4A-Wrapper
 mkdir build && cd build
-cmake ..
-cmake --build .
-cmake --install
+sudo cmake .. -G Ninja
+sudo ninja
+sudo ninja install
 ```
 
 ### Test it!
