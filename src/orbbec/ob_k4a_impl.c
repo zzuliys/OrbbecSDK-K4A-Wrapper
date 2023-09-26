@@ -45,6 +45,7 @@ char K4A_ENV_VAR_LOG_TO_A_FILE[] = K4A_ENABLE_LOG_TO_A_FILE;
 
 #define MAX_JSON_SIZE 1024 * 10
 #define ORBBEC_MEGA_PID 0x0669
+#define ORBBEC_BOLT_PID 0x066B
 #define MAX_DELAY_TIME 33333
 #define MIN_DELAY_TIME -33333
 
@@ -270,7 +271,7 @@ k4a_result_t k4a_device_open(uint32_t index, k4a_device_t *device_handle)
 
     result = TRACE_CALL(imusync_create(&device->imusync));
 
-    if (pid == ORBBEC_MEGA_PID)
+    if (pid == ORBBEC_MEGA_PID || pid == ORBBEC_BOLT_PID)
     {
 
         if (K4A_SUCCEEDED(result) && (handle != NULL))
@@ -1443,7 +1444,7 @@ static k4a_result_t validate_configuration(k4a_device_context_t *device, const k
 
     if (K4A_SUCCEEDED(result))
     {
-        if (config->color_resolution < K4A_COLOR_RESOLUTION_OFF || config->color_resolution > K4A_COLOR_RESOLUTION_960P)
+        if (config->color_resolution < K4A_COLOR_RESOLUTION_OFF)
         {
             result = K4A_RESULT_FAILED;
             LOG_ERROR("The configured color_resolution is not a valid k4a_color_resolution_t value.", 0);
@@ -1452,7 +1453,7 @@ static k4a_result_t validate_configuration(k4a_device_context_t *device, const k
 
     if (K4A_SUCCEEDED(result))
     {
-        if (config->depth_mode < K4A_DEPTH_MODE_OFF || config->depth_mode > K4A_DEPTH_MODE_640x480)
+        if (config->depth_mode < K4A_DEPTH_MODE_OFF)
         {
             result = K4A_RESULT_FAILED;
             LOG_ERROR("The configured depth_mode is not a valid k4a_depth_mode_t value.", 0);
@@ -1606,7 +1607,7 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
     int pid = ob_device_info_pid(dev_info, &ob_err);
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
 
-    if (pid == ORBBEC_MEGA_PID)
+    if (pid == ORBBEC_MEGA_PID || pid == ORBBEC_BOLT_PID)
     {
 
         OB_DEVICE_SYNC_CONFIG ob_config;
@@ -1653,7 +1654,7 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
         CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
     }
 
-    if (pid != ORBBEC_MEGA_PID && config->depth_mode == K4A_DEPTH_MODE_PASSIVE_IR)
+    if (pid != ORBBEC_MEGA_PID && pid != ORBBEC_BOLT_PID && config->depth_mode == K4A_DEPTH_MODE_PASSIVE_IR)
     {
         LOG_ERROR("not support passive ir", 0);
         return K4A_RESULT_FAILED;
@@ -1690,14 +1691,6 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
         k4a_depth_width = 1024;
         k4a_depth_height = 1024;
         break;
-    case K4A_DEPTH_MODE_640x480:
-        k4a_depth_width = 640;
-        k4a_depth_height = 480;
-        break;
-    case K4A_DEPTH_MODE_320x240:
-        k4a_depth_width = 320;
-        k4a_depth_height = 240;
-        break;
     default:
         break;
     }
@@ -1733,10 +1726,6 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
         k4a_color_width = 1280;
         k4a_color_height = 720;
         break;
-    case K4A_COLOR_RESOLUTION_480P:
-        k4a_color_width = 640;
-        k4a_color_height = 480;
-        break;
     case K4A_COLOR_RESOLUTION_1440P:
         k4a_color_width = 2560;
         k4a_color_height = 1440;
@@ -1752,14 +1741,6 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
     case K4A_COLOR_RESOLUTION_3072P:
         k4a_color_width = 4096;
         k4a_color_height = 3072;
-        break;
-    case K4A_COLOR_RESOLUTION_960P:
-        k4a_color_width = 1280;
-        k4a_color_height = 960;
-        break;
-    case K4A_COLOR_RESOLUTION_1024X768:
-        k4a_color_width = 1024;
-        k4a_color_height = 768;
         break;
     default:
         break;
@@ -1788,7 +1769,7 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
         if (config->depth_mode != K4A_DEPTH_MODE_PASSIVE_IR)
         {
 
-            if (pid == ORBBEC_MEGA_PID)
+            if (pid == ORBBEC_MEGA_PID || pid == ORBBEC_BOLT_PID)
             {
                 ob_device_set_int_property(device->dev, OB_PROP_SWITCH_IR_MODE_INT, ACTIVE_IR, &ob_err);
                 CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
@@ -1825,7 +1806,7 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
         else
         {
 
-            if (pid == ORBBEC_MEGA_PID)
+            if (pid == ORBBEC_MEGA_PID || pid == ORBBEC_BOLT_PID)
             {
                 ob_device_set_int_property(device->dev, OB_PROP_SWITCH_IR_MODE_INT, PASSIVE_IR, &ob_err);
                 CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
@@ -2030,7 +2011,7 @@ k4a_buffer_result_t k4a_device_get_serialnum(k4a_device_t device_handle,
     caller_buffer_size = *serial_number_size;
 
     size_t snLen = strlen(sn);
-    *serial_number_size = snLen+1;
+    *serial_number_size = snLen + 1;
 
     if (caller_buffer_size <= snLen || serial_number == NULL)
     {
@@ -2059,7 +2040,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
     }
 
     char split_version[MAX_FIREWARE_VERSION_LEN] = { 0 };
-    int count = 0;
+    size_t count = 0;
 
     for (size_t i = 0; i < orbbec_version_len; i++)
     {
@@ -2070,7 +2051,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
         }
     }
 
-    int split_version_len = orbbec_version_len - count;
+    size_t split_version_len = orbbec_version_len - count;
     memcpy(split_version, orbbec_version + count, split_version_len);
 
     count = 0;
@@ -3012,14 +2993,6 @@ k4a_result_t k4a_device_get_calibration_from_orbbec_sdk(k4a_device_t device_hand
         k4a_depth_width = 1024;
         k4a_depth_height = 1024;
         break;
-    case K4A_DEPTH_MODE_640x480:
-        k4a_depth_width = 640;
-        k4a_depth_height = 480;
-        break;
-    case K4A_DEPTH_MODE_320x240:
-        k4a_depth_width = 320;
-        k4a_depth_height = 240;
-        break;
     default:
         break;
     }
@@ -3041,18 +3014,6 @@ k4a_result_t k4a_device_get_calibration_from_orbbec_sdk(k4a_device_t device_hand
     case K4A_COLOR_RESOLUTION_1080P:
         k4a_color_width = 1920;
         k4a_color_height = 1080;
-        break;
-    case K4A_COLOR_RESOLUTION_1024X768:
-        k4a_color_width = 1024;
-        k4a_color_height = 768;
-        break;
-    case K4A_COLOR_RESOLUTION_960P:
-        k4a_color_width = 1280;
-        k4a_color_height = 960;
-        break;
-    case K4A_COLOR_RESOLUTION_480P:
-        k4a_color_width = 640;
-        k4a_color_height = 480;
         break;
     case K4A_COLOR_RESOLUTION_1440P:
         k4a_color_width = 2560;
@@ -3264,7 +3225,7 @@ k4a_result_t k4a_device_get_calibration(k4a_device_t device_handle,
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
     int pid = ob_device_info_pid(dev_info, &ob_err);
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
-    if (pid == ORBBEC_MEGA_PID)
+    if (pid == ORBBEC_MEGA_PID || pid == ORBBEC_BOLT_PID)
     {
         return k4a_device_get_calibration_from_json(device_handle, depth_mode, color_resolution, calibration);
     }

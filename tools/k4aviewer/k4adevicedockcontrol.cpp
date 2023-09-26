@@ -488,11 +488,6 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                                                                   K4A_COLOR_RESOLUTION_480P,
                                                                   colorSettingsEditable);
         */
-
-         colorResolutionUpdated |= ImGuiExtensions::K4ARadioButton(" 960p",
-                                                                  pColorResolution,
-                                                                  K4A_COLOR_RESOLUTION_960P,
-                                                                  colorSettingsEditable);
         ImGuiExtensions::K4AShowTooltip(imageFormatHelpMessage, !imageFormatSupportsHighResolution);
 
         ImGui::Unindent();

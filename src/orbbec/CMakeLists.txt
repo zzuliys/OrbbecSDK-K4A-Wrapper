@@ -5,7 +5,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(frame_queue)
 add_subdirectory(imu_sync)
 
-option(USER_LOCAL_ORBBECSDK "Use local OrbbecSDK" ON)  # set to OFF for release branch
+option(USER_LOCAL_ORBBECSDK "Use local OrbbecSDK" OFF)
 if(USER_LOCAL_ORBBECSDK)
     set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK_local)
 else()

@@ -234,9 +234,6 @@ std::ostream &operator<<(std::ostream &s, const k4a_depth_mode_t &val)
     case K4A_DEPTH_MODE_PASSIVE_IR:
         s << DepthModePassiveIr;
         break;
-    case K4A_DEPTH_MODE_640x480:
-        s << DepthMode640X480;
-        break;
     default:
         throw std::logic_error("Unrecognized depth mode");
     }
@@ -270,10 +267,6 @@ std::istream &operator>>(std::istream &s, k4a_depth_mode_t &val)
     else if (str == DepthModePassiveIr)
     {
         val = K4A_DEPTH_MODE_PASSIVE_IR;
-    }
-    else if (str == DepthMode640X480)
-    {
-        val = K4A_DEPTH_MODE_640x480;
     }
     else
     {
@@ -320,12 +313,6 @@ std::ostream &operator<<(std::ostream &s, const k4a_color_resolution_t &val)
     case K4A_COLOR_RESOLUTION_3072P:
         s << ColorResolution3072p;
         break;
-    case K4A_COLOR_RESOLUTION_480P:
-        s << ColorResolution480p;
-        break;
-    case K4A_COLOR_RESOLUTION_960P:
-        s << ColorResolution960p;
-        break;
     default:
         throw std::logic_error("Unrecognized color resolution");
     }
@@ -363,14 +350,6 @@ std::istream &operator>>(std::istream &s, k4a_color_resolution_t &val)
     else if (str == ColorResolution3072p)
     {
         val = K4A_COLOR_RESOLUTION_3072P;
-    }
-    else if (str == ColorResolution480p)
-    {
-        val = K4A_COLOR_RESOLUTION_480P;
-    }
-    else if (str == ColorResolution960p)
-    {
-        val = K4A_COLOR_RESOLUTION_960P;
     }
     else
     {

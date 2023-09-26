@@ -18,6 +18,7 @@ The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source c
 ## Supported camera and platform
 
 Orbbec Femto Mega: Windows10+, Ubuntu20.04+; x64
+Orbbec Femto Bolt: Windows10+, Ubuntu18.04+; x64
 
 *Other Orbbec cameras and platforms without test, don't use it in production environment.*
 
@@ -33,27 +34,28 @@ git submodule update --init --recursive
 
 ### Build && install
 
-**It`s is same as the Native K4A [build](docs/building.md)**
+**It is same as the Native K4A, refer to [Building and Dependencies](./docs/building.md)**
 
+Quick Instructions:
 * Windows: it's recommend to use the Ninja to build the project
 
-```powershell
-cd OrbbecSDK-K4A-Wrapper
-mkdir build && cd build
-cmake .. -G Ninja
-cmake --build .
-cmake --install .
-```
+    ```powershell
+    cd OrbbecSDK-K4A-Wrapper
+    mkdir build && cd build
+    cmake .. -G Ninja
+    cmake --build .
+    cmake --install .
+    ```
 
 * Linux
 
-```bash
-cd OrbbecSDK-K4A-Wrapper
-mkdir build && cd build
-cmake ..
-cmake --build .
-cmake --install
-```
+    ```bash
+    cd OrbbecSDK-K4A-Wrapper
+    mkdir build && cd build
+    cmake ..
+    cmake --build .
+    cmake --install
+    ```
 
 ### Test it!
 

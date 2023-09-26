@@ -140,15 +140,6 @@ static const char *get_string_from_color_resolution(k4a_color_resolution_t resol
     case K4A_COLOR_RESOLUTION_3072P:
         return "4096 * 3072 4:3";
         break;
-    case K4A_COLOR_RESOLUTION_480P:
-        return "640 * 480 4:3";
-        break;
-    case K4A_COLOR_RESOLUTION_960P:
-        return "1280 * 960 4:3";
-        break;
-    case K4A_COLOR_RESOLUTION_1024X768:
-        return "1024 * 768 4:3";
-        break;
     }
     assert(0);
     return "Unknown resolution";
@@ -175,12 +166,6 @@ static const char *get_string_from_depth_mode(k4a_depth_mode_t mode)
         break;
     case K4A_DEPTH_MODE_PASSIVE_IR:
         return "K4A_DEPTH_MODE_PASSIVE_IR";
-        break;
-    case K4A_DEPTH_MODE_640x480:
-        return "K4A_DEPTH_MODE_640x480";
-        break;
-    case K4A_DEPTH_MODE_320x240:
-        return "K4A_DEPTH_MODE_320x240";
         break;
     }
     assert(0);
