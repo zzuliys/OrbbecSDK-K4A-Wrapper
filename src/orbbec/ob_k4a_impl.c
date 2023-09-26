@@ -2040,7 +2040,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
     }
 
     char split_version[MAX_FIREWARE_VERSION_LEN] = { 0 };
-    size_t count = 0;
+    int count = 0;
 
     for (int i = 0; i < orbbec_version_len; i++)
     {
@@ -2051,7 +2051,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
         }
     }
 
-    size_t split_version_len = orbbec_version_len - count;
+    int split_version_len = orbbec_version_len - count;
     memcpy(split_version, orbbec_version + count, (uint16_t)split_version_len);
 
     count = 0;

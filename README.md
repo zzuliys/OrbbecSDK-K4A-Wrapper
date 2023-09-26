@@ -39,6 +39,7 @@ git submodule update --init --recursive
 **It is same as the Native K4A, refer to [Building and Dependencies](./docs/building.md)**
 
 Quick Instructions:
+
 * Windows:
 
     ```powershell
@@ -63,6 +64,10 @@ Quick Instructions:
 ### Test it!
 
 Connect the Orbbec camera to your PC, and run the k4aviewer.
+
+## Documentation
+
+API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper/bolt-1.7.x-dev/).
 
 ## Attention
 
