@@ -82,6 +82,10 @@ Quick Instructions:
 ### Run
 
 Connect the Orbbec camera to your PC, and run the k4aviewer.
+```shell
+cd build/bin
+./k4aviewer  # win: ./k4aviewer.exe
+```
 
 ## Documentation
 
