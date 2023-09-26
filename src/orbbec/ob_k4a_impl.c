@@ -2051,7 +2051,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
         }
     }
 
-    int split_version_len = orbbec_version_len - count;
+    size_t split_version_len = orbbec_version_len - count;
     memcpy(split_version, orbbec_version + count, (uint16_t)split_version_len);
 
     count = 0;
