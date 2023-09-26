@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+ï»¿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 // Associated header
@@ -49,7 +49,7 @@ void StopSensor(k4a::device *device,
     *started = false;
 }
 
-// ´ÓSensorÖĞÈ¡Á÷
+// ä»Sensorä¸­å–æµ
 template<typename T>
 bool PollSensor(const char *sensorFriendlyName,
                 k4a::device *device,
@@ -178,7 +178,7 @@ void K4ADeviceDockControl::ShowColorControlAutoButton(k4a_color_control_mode_t c
     ImGui::PopID();
 }
 
-// ÉèÖÃRGB ²ÎÊı
+// è®¾ç½®RGB å‚æ•°
 void K4ADeviceDockControl::ApplyColorSetting(k4a_color_control_command_t command, ColorSetting *cacheEntry)
 {
     try
@@ -231,7 +231,7 @@ void K4ADeviceDockControl::ApplyDefaultColorSettings()
     ApplyColorSetting(K4A_COLOR_CONTROL_POWERLINE_FREQUENCY, &m_colorSettingsCache.PowerlineFrequency);
 }
 
-// »ñÈ¡RGB²ÎÊı
+// è·å–RGBå‚æ•°
 void K4ADeviceDockControl::ReadColorSetting(k4a_color_control_command_t command, ColorSetting *cacheEntry)
 {
     try
@@ -283,7 +283,7 @@ bool K4ADeviceDockControl::DeviceIsStarted() const
 K4ADeviceDockControl::K4ADeviceDockControl(k4a::device &&device) : m_device(std::move(device))
 {
     ApplyDefaultConfiguration();
-    // ĞòÁĞºÅ
+    // åºåˆ—å·
     m_deviceSerialNumber = m_device.get_serialnum();
     m_windowTitle = m_deviceSerialNumber + ": Configuration";
 
@@ -298,7 +298,7 @@ K4ADeviceDockControl::~K4ADeviceDockControl()
     Stop();
 }
 
-// ÏÔÊ¾ĞòÁĞºÅ
+// æ˜¾ç¤ºåºåˆ—å·
 K4ADockControlStatus K4ADeviceDockControl::Show()
 {
     std::stringstream labelBuilder;
@@ -763,7 +763,7 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
     if (ImGui::TreeNode("External Sync"))
     {
         /*
-        //TODO: Mega »ñÈ¡²»µ½Á¬½Ó×´Ì¬
+        //TODO: Mega è·å–ä¸åˆ°è¿æ¥çŠ¶æ€
         ImGui::Text("Sync cable state");
         ImGuiExtensions::K4ARadioButton("In", m_syncInConnected, false);
         ImGui::SameLine();
@@ -1143,7 +1143,7 @@ void K4ADeviceDockControl::SetViewType(K4AWindowSet::ViewType viewType)
     case K4AWindowSet::ViewType::PointCloudViewer:
         try
         {
-            // »ñÈ¡±ê¶¨²ÎÊı
+            // è·å–æ ‡å®šå‚æ•°
             k4a::calibration calib = m_device.get_calibration(m_config.DepthMode, m_config.ColorResolution);
             bool rgbPointCloudAvailable = m_config.EnableColorCamera &&
                                           m_config.ColorFormat == K4A_IMAGE_FORMAT_COLOR_BGRA32;
