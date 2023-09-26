@@ -74,6 +74,7 @@ Quick Instructions:
 * Windows:
     Timestamp(metadata) registration
     ``` powershell
+    # Running as Administrator using PowerShell?
     cd src/orbbec/OrbbecSDK/misc/scripts
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
     .\obsensor_metadata_win10.ps1 -op install_all
