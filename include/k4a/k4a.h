@@ -1641,6 +1641,8 @@ K4A_EXPORT k4a_result_t k4a_device_get_calibration(k4a_device_t device_handle,
  * \returns
  * ::K4A_RESULT_SUCCEEDED if the connector status was successfully read.
  *
+ * \attention Unsupported for Orbbec Femto Bolt, will return K4A_RESULT_FAILED.
+ *
  * \relates k4a_device_t
  *
  * \remarks

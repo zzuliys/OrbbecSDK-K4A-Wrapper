@@ -92,6 +92,8 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.12.0")
     set(NAMELINK_IF_AVAILABLE NAMELINK_COMPONENT development)
 endif()
 
+add_subdirectory(docs)
+
 # Setup install
 include(GNUInstallDirs)
 install(

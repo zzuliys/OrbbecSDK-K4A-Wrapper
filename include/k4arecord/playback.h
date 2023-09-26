@@ -799,7 +799,7 @@ K4ARECORD_EXPORT void k4a_playback_data_block_release(k4a_playback_data_block_t 
  * recording, or using an absolute device timestamp.
  *
  * \returns
- * ::K4A_RESULT_SUCCEEDED if the seek operation was successful, or ::K4A_RESULT_FAILED if an error occured. The current
+ * ::K4A_RESULT_SUCCEEDED if the seek operation was successful, or ::K4A_RESULT_FAILED if an error occurred. The current
  * seek position is left unchanged if a failure is returned.
  *
  * \relates k4a_playback_t
