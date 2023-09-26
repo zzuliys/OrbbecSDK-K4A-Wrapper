@@ -60,8 +60,26 @@ Quick Instructions:
     sudo ninja
     sudo ninja install
     ```
+### Environment setup
 
-### Test it!
+* Linux:
+    Install udev rules file
+
+    ``` bash
+    cd src/orbbec/OrbbecSDK/misc/scripts
+    sudo chmod +x ./install_udev_rules.sh
+    ./install_udev_rules.sh
+    ```
+
+* Windows:
+    Timestamp(metadata) registration
+    ``` powershell
+    cd src/orbbec/OrbbecSDK/misc/scripts
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    .\obsensor_metadata_win10.ps1 -op install_all
+    ```
+
+### Run
 
 Connect the Orbbec camera to your PC, and run the k4aviewer.
 
