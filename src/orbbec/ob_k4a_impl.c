@@ -2010,13 +2010,8 @@ k4a_buffer_result_t k4a_device_get_serialnum(k4a_device_t device_handle,
     size_t caller_buffer_size = 0;
     caller_buffer_size = *serial_number_size;
 
-<<<<<<< HEAD
     size_t snLen = strlen(sn);
     *serial_number_size = snLen + 1;
-=======
-    int snLen = (int)strlen(sn);
-    *serial_number_size = snLen;
->>>>>>> ob/feature/1.1.x_build_ninja
 
     if (caller_buffer_size <= (size_t)snLen || serial_number == NULL)
     {
