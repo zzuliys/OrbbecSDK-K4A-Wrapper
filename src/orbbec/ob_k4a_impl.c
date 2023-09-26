@@ -576,7 +576,7 @@ k4a_result_t k4a_device_start_imu(k4a_device_t device_handle)
         }
 
         ob_sensor_start(accel_sensor, profile, ob_accel_frame, device_handle, &ob_err);
-        // CHECK_OB_ERROR(ob_err);
+        CHECK_OB_ERROR(ob_err);
         ob_delete_stream_profile(profile, &ob_err);
         if (ob_err != NULL)
         {
@@ -2013,7 +2013,7 @@ k4a_buffer_result_t k4a_device_get_serialnum(k4a_device_t device_handle,
     size_t snLen = strlen(sn);
     *serial_number_size = snLen + 1;
 
-    if (caller_buffer_size <= snLen || serial_number == NULL)
+    if (caller_buffer_size <= (size_t)snLen || serial_number == NULL)
     {
         return K4A_BUFFER_RESULT_TOO_SMALL;
     }
@@ -2032,7 +2032,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
         return K4A_RESULT_FAILED;
     }
 
-    size_t orbbec_version_len = strlen(orbbec_version);
+    int orbbec_version_len = (int)strlen(orbbec_version);
     if (orbbec_version_len >= MAX_FIREWARE_VERSION_LEN)
     {
         LOG_WARNING("orbbec_version_len overflow ", 0);
@@ -2042,7 +2042,7 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
     char split_version[MAX_FIREWARE_VERSION_LEN] = { 0 };
     size_t count = 0;
 
-    for (size_t i = 0; i < orbbec_version_len; i++)
+    for (int i = 0; i < orbbec_version_len; i++)
     {
         if (orbbec_version[i] >= '0' && orbbec_version[i] <= '9')
         {
@@ -2051,8 +2051,8 @@ k4a_result_t version_convert(const char *orbbec_version, k4a_version_t *k4a_vers
         }
     }
 
-    size_t split_version_len = orbbec_version_len - count;
-    memcpy(split_version, orbbec_version + count, split_version_len);
+    int split_version_len = orbbec_version_len - count;
+    memcpy(split_version, orbbec_version + count, (uint16_t)split_version_len);
 
     count = 0;
     for (int i = 0; i < split_version_len; i++)
