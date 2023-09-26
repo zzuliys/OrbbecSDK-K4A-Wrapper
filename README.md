@@ -36,7 +36,7 @@ git submodule update --init --recursive
 
 ### Build && install
 
-**It is same as the Native K4A, refer to [Building and Dependencies](./docs/building.md)**
+**It is the same as Native K4A,please refer to: [Building and Dependencies](./docs/building.md)**
 
 Quick Instructions:
 
@@ -82,7 +82,7 @@ Quick Instructions:
 
 ### Run
 
-Connect the Orbbec camera to your PC, and run the k4aviewer.
+Connect the Orbbec camera to your PC and run the k4aviewer.
 ```shell
 cd build/bin
 ./k4aviewer  # win: ./k4aviewer.exe
