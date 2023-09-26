@@ -36,7 +36,7 @@ git submodule update --init --recursive
 
 ### Build && install
 
-**It is the same as Native K4A,please refer to: [Building and Dependencies](./docs/building.md)**
+**It is the same as Native K4A, please refer to: [Building and Dependencies](./docs/building.md)**
 
 Quick Instructions:
 
