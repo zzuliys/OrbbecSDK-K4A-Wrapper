@@ -39,7 +39,7 @@ git submodule update --init --recursive
 **It is same as the Native K4A, refer to [Building and Dependencies](./docs/building.md)**
 
 Quick Instructions:
-* Windows: it's recommend to use the Ninja to build the project
+* Windows: 
 
     ```powershell
     cd OrbbecSDK-K4A-Wrapper
@@ -58,7 +58,7 @@ Quick Instructions:
     sudo cmake .. -G Ninja
     sudo ninja
     sudo ninja install
-```
+    ```
 
 ### Test it!
 
