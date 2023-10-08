@@ -23,12 +23,6 @@ inline std::pair<int, int> GetColorDimensions(const k4a_color_resolution_t resol
         return { 1280, 720 };
     case K4A_COLOR_RESOLUTION_1080P:
         return { 1920, 1080 };
-    case K4A_COLOR_RESOLUTION_480P:
-        return { 640, 480 };
-    case K4A_COLOR_RESOLUTION_960P:
-        return { 1280, 960 };
-    case K4A_COLOR_RESOLUTION_1024X768:
-        return { 1024, 768 };
     case K4A_COLOR_RESOLUTION_2160P:
         return { 3840, 2160 };
     case K4A_COLOR_RESOLUTION_1440P:
@@ -60,8 +54,6 @@ inline std::pair<int, int> GetDepthDimensions(const k4a_depth_mode_t depthMode)
         return { 1024, 1024 };
     case K4A_DEPTH_MODE_PASSIVE_IR:
         return { 1024, 1024 };
-    case K4A_DEPTH_MODE_640x480:
-        return { 640, 480 };
 
     default:
         throw std::logic_error("Invalid depth dimensions value!");
@@ -82,8 +74,6 @@ inline std::pair<uint16_t, uint16_t> GetDepthModeRange(const k4a_depth_mode_t de
     case K4A_DEPTH_MODE_WFOV_2X2BINNED:
         return { (uint16_t)250, (uint16_t)3000 };
     case K4A_DEPTH_MODE_WFOV_UNBINNED:
-        return { (uint16_t)250, (uint16_t)2500 };
-    case K4A_DEPTH_MODE_640x480:
         return { (uint16_t)250, (uint16_t)2500 };
 
     case K4A_DEPTH_MODE_PASSIVE_IR:

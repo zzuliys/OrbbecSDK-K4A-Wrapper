@@ -20,6 +20,7 @@ The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source c
 ## Supported camera and platform
 
 Orbbec Femto Mega: Windows10+, Ubuntu20.04+; x64
+Orbbec Femto Bolt: Windows10+, Ubuntu18.04+; x64
 
 *Other Orbbec cameras and platforms without test, don't use it in production environment.*
 
@@ -35,33 +36,75 @@ git submodule update --init --recursive
 
 ### Build && install
 
-**It`s is same as the Native K4A [build](docs/building.md)**
+**It is the same as Native K4A, please refer to: [Building and Dependencies](./docs/building.md)**
 
-* Windows: it's recommend to use the Ninja to build the project
+Quick Instructions:
 
-```powershell
-cd OrbbecSDK-K4A-Wrapper
-mkdir build && cd build
-cmake .. -G Ninja
-cmake --build .
-cmake --install .
-```
+* Windows:
+
+    ```powershell
+    cd OrbbecSDK-K4A-Wrapper
+    mkdir build
+    cd build
+    cmake .. -G Ninja
+    ninja
+    ninja install
+    ```
 
 * Linux
 
-```bash
-cd OrbbecSDK-K4A-Wrapper
-mkdir build && cd build
-cmake ..
-cmake --build .
-cmake --install
+    ```bash
+    cd OrbbecSDK-K4A-Wrapper
+    mkdir build && cd build
+    sudo cmake .. -G Ninja
+    sudo ninja
+    sudo ninja install
+    ```
+### Environment setup
+
+* Linux:
+    Install udev rules file
+
+    ``` bash
+    cd src/orbbec/OrbbecSDK/misc/scripts
+    sudo chmod +x ./install_udev_rules.sh
+    ./install_udev_rules.sh
+    ```
+
+* Windows:
+    Timestamp(metadata) registration
+    ``` powershell
+    # Running as Administrator using PowerShell
+    cd src/orbbec/OrbbecSDK/misc/scripts
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    .\obsensor_metadata_win10.ps1 -op install_all
+    ```
+
+### Run
+
+Connect the Orbbec camera to your PC and run the k4aviewer.
+```shell
+cd build/bin
+./k4aviewer  # win: ./k4aviewer.exe
 ```
 
-### Test it!
+## Documentation
 
-Connect the Orbbec camera to your PC, and run the k4aviewer.
+API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper/bolt-1.7.x-dev/).
 
 ## Attention
 
 1. The library of this branch is not support the K4A device, please use the [Native K4A](https://github.com/microsoft/Azure-Kinect-Sensor-SDK) library to access the K4A device.
 2. The OrbbecSDK K4A Wrapper is aim to provide the same API as the K4A, but it's not full API for OrbbecSDK and feature for Orbbec camera. If you want to use the full feature of Orbbec camera, please use the [OrbbecSDK](https://github.com/orbbec/OrbbecSDK) directly.
+3. For Linux user, there may be an issue with the initialization of DepthEngine when using Orbbec Femto Bolt due to modifications made by Microsoft in the new version of DepthEngine. This can cause failure during the start of the depth stream. The reason for this is that simultaneous use of multiple OpenGL contexts may result in conflicts. User can try to resolve it follow this:
+   [https://www.khronos.org/opengl/wiki/OpenGL_and_multithreading](https://www.khronos.org/opengl/wiki/OpenGL_and_multithreading)
+
+    ``` c++
+    // file: tools/k4aviewer/k4adevicedockcontrol.cpp
+    GLFWwindow *currentContext = glfwGetCurrentContext(); // store the current context
+    glfwMakeContextCurrent(NULL);  // make current context to NULL
+
+    StartCameras(); //  will initialize the DepthEngine
+
+    glfwMakeContextCurrent(currentContext); // restore the current context
+    ```

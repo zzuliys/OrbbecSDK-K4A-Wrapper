@@ -81,8 +81,7 @@ transformation_get_mode_specific_depth_camera_calibration(const k4a_calibration_
 
     switch (depth_mode)
     {
-    case K4A_DEPTH_MODE_NFOV_2X2BINNED:
-    {
+    case K4A_DEPTH_MODE_NFOV_2X2BINNED: {
         k4a_camera_calibration_mode_info_t mode_info = { { 512, 512 }, { 96, 90 }, { 320, 288 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(raw_camera_calibration,
@@ -90,8 +89,7 @@ transformation_get_mode_specific_depth_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_DEPTH_MODE_NFOV_UNBINNED:
-    {
+    case K4A_DEPTH_MODE_NFOV_UNBINNED: {
         k4a_camera_calibration_mode_info_t mode_info = { { 1024, 1024 }, { 192, 180 }, { 640, 576 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(raw_camera_calibration,
@@ -99,8 +97,7 @@ transformation_get_mode_specific_depth_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_DEPTH_MODE_WFOV_2X2BINNED:
-    {
+    case K4A_DEPTH_MODE_WFOV_2X2BINNED: {
         k4a_camera_calibration_mode_info_t mode_info = { { 512, 512 }, { 0, 0 }, { 512, 512 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(raw_camera_calibration,
@@ -109,8 +106,7 @@ transformation_get_mode_specific_depth_camera_calibration(const k4a_calibration_
                                                                 /* pixelized_zero_centered_output = */ true));
     }
     case K4A_DEPTH_MODE_WFOV_UNBINNED:
-    case K4A_DEPTH_MODE_PASSIVE_IR:
-    {
+    case K4A_DEPTH_MODE_PASSIVE_IR: {
         k4a_camera_calibration_mode_info_t mode_info = { { 1024, 1024 }, { 0, 0 }, { 1024, 1024 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(raw_camera_calibration,
@@ -118,8 +114,7 @@ transformation_get_mode_specific_depth_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    default:
-    {
+    default: {
         return K4A_RESULT_FAILED;
     }
     }
@@ -159,8 +154,7 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
 
     switch (color_resolution)
     {
-    case K4A_COLOR_RESOLUTION_720P:
-    {
+    case K4A_COLOR_RESOLUTION_720P: {
         k4a_camera_calibration_mode_info_t mode_info = { { 1280, 960 }, { 0, 120 }, { 1280, 720 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
@@ -168,8 +162,7 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_COLOR_RESOLUTION_1080P:
-    {
+    case K4A_COLOR_RESOLUTION_1080P: {
         k4a_camera_calibration_mode_info_t mode_info = { { 1920, 1440 }, { 0, 180 }, { 1920, 1080 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
@@ -177,8 +170,7 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_COLOR_RESOLUTION_1440P:
-    {
+    case K4A_COLOR_RESOLUTION_1440P: {
         k4a_camera_calibration_mode_info_t mode_info = { { 2560, 1920 }, { 0, 240 }, { 2560, 1440 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
@@ -186,8 +178,7 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_COLOR_RESOLUTION_1536P:
-    {
+    case K4A_COLOR_RESOLUTION_1536P: {
         k4a_camera_calibration_mode_info_t mode_info = { { 2048, 1536 }, { 0, 0 }, { 2048, 1536 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
@@ -195,8 +186,7 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_COLOR_RESOLUTION_2160P:
-    {
+    case K4A_COLOR_RESOLUTION_2160P: {
         k4a_camera_calibration_mode_info_t mode_info = { { 3840, 2880 }, { 0, 360 }, { 3840, 2160 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
@@ -204,8 +194,7 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_COLOR_RESOLUTION_3072P:
-    {
+    case K4A_COLOR_RESOLUTION_3072P: {
         k4a_camera_calibration_mode_info_t mode_info = { { 4096, 3072 }, { 0, 0 }, { 4096, 3072 } };
         return TRACE_CALL(
             transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
@@ -213,18 +202,7 @@ transformation_get_mode_specific_color_camera_calibration(const k4a_calibration_
                                                                 mode_specific_camera_calibration,
                                                                 /* pixelized_zero_centered_output = */ true));
     }
-    case K4A_COLOR_RESOLUTION_960P:
-    {
-        //k4a_camera_calibration_mode_info_t mode_info = { { 1280, 960 }, { 0, 0 }, { 1280, 960 } };
-        k4a_camera_calibration_mode_info_t mode_info = { { 1707, 1280 }, { 213, 160 }, { 1280, 960 } };
-        return TRACE_CALL(
-            transformation_get_mode_specific_camera_calibration(mode_specific_camera_calibration,
-                                                                &mode_info,
-                                                                mode_specific_camera_calibration,
-                                                               /* pixelized_zero_centered_output = */ true));
-    }
-    default:
-    {
+    default: {
         LOG_ERROR("Unexpected color resolution type %d.", color_resolution);
         return K4A_RESULT_FAILED;
     }

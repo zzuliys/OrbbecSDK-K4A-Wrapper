@@ -1851,7 +1851,6 @@ k4a_result_t convert_block_to_image(k4a_playback_context_t *context,
 
     if (K4A_SUCCEEDED(result) && buffer != NULL)
     {
-        //TODO:NV12¸ñÊ½
         result = TRACE_CALL(k4a_image_create_from_buffer(target_format,
                                                          out_width,
                                                          out_height,
@@ -1893,7 +1892,6 @@ k4a_result_t new_capture(k4a_playback_context_t *context, block_info_t *block, k
     {
         result = TRACE_CALL(convert_block_to_image(context, block, &image_handle, context->color_format_conversion));
         k4a_capture_set_color_image(*capture_handle, image_handle);
-        
     }
     else if (block->reader == context->depth_track)
     {

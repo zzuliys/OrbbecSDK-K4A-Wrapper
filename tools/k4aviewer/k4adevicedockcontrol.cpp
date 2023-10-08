@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+Ôªø// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 // Associated header
@@ -49,7 +49,7 @@ void StopSensor(k4a::device *device,
     *started = false;
 }
 
-//¥”Sensor÷–»°¡˜
+// ‰ªéSensor‰∏≠ÂèñÊµÅ
 template<typename T>
 bool PollSensor(const char *sensorFriendlyName,
                 k4a::device *device,
@@ -74,13 +74,12 @@ bool PollSensor(const char *sensorFriendlyName,
                 dataSource->NotifyObservers(data);
             }
             return true;
-        }else
+        }
+        else
         {
             errorMessage = "timed out!";
             return true;
         }
-
-
     }
     catch (const k4a::error &e)
     {
@@ -179,7 +178,7 @@ void K4ADeviceDockControl::ShowColorControlAutoButton(k4a_color_control_mode_t c
     ImGui::PopID();
 }
 
-//…Ë÷√RGB ≤Œ ˝
+// ËÆæÁΩÆRGB ÂèÇÊï∞
 void K4ADeviceDockControl::ApplyColorSetting(k4a_color_control_command_t command, ColorSetting *cacheEntry)
 {
     try
@@ -222,8 +221,8 @@ void K4ADeviceDockControl::ApplyDefaultColorSettings()
     m_colorSettingsCache.Sharpness = { K4A_COLOR_CONTROL_MODE_MANUAL, 6 };
     ApplyColorSetting(K4A_COLOR_CONTROL_SHARPNESS, &m_colorSettingsCache.Sharpness);
 
-    //m_colorSettingsCache.BacklightCompensation = { K4A_COLOR_CONTROL_MODE_MANUAL, 0 };
-    //ApplyColorSetting(K4A_COLOR_CONTROL_BACKLIGHT_COMPENSATION, &m_colorSettingsCache.BacklightCompensation);
+    // m_colorSettingsCache.BacklightCompensation = { K4A_COLOR_CONTROL_MODE_MANUAL, 0 };
+    // ApplyColorSetting(K4A_COLOR_CONTROL_BACKLIGHT_COMPENSATION, &m_colorSettingsCache.BacklightCompensation);
 
     m_colorSettingsCache.Gain = { K4A_COLOR_CONTROL_MODE_MANUAL, 50 };
     ApplyColorSetting(K4A_COLOR_CONTROL_GAIN, &m_colorSettingsCache.Gain);
@@ -232,7 +231,7 @@ void K4ADeviceDockControl::ApplyDefaultColorSettings()
     ApplyColorSetting(K4A_COLOR_CONTROL_POWERLINE_FREQUENCY, &m_colorSettingsCache.PowerlineFrequency);
 }
 
-//ªÒ»°RGB≤Œ ˝
+// Ëé∑ÂèñRGBÂèÇÊï∞
 void K4ADeviceDockControl::ReadColorSetting(k4a_color_control_command_t command, ColorSetting *cacheEntry)
 {
     try
@@ -284,14 +283,14 @@ bool K4ADeviceDockControl::DeviceIsStarted() const
 K4ADeviceDockControl::K4ADeviceDockControl(k4a::device &&device) : m_device(std::move(device))
 {
     ApplyDefaultConfiguration();
-    //–Ú¡–∫≈
+    // Â∫èÂàóÂè∑
     m_deviceSerialNumber = m_device.get_serialnum();
     m_windowTitle = m_deviceSerialNumber + ": Configuration";
 
     m_microphone = K4AAudioManager::Instance().GetMicrophoneForDevice(m_deviceSerialNumber);
 
     LoadColorSettingsCache();
-    //RefreshSyncCableStatus(); 
+    // RefreshSyncCableStatus();
 }
 
 K4ADeviceDockControl::~K4ADeviceDockControl()
@@ -299,7 +298,7 @@ K4ADeviceDockControl::~K4ADeviceDockControl()
     Stop();
 }
 
-//œ‘ æ–Ú¡–∫≈
+// ÊòæÁ§∫Â∫èÂàóÂè∑
 K4ADockControlStatus K4ADeviceDockControl::Show()
 {
     std::stringstream labelBuilder;
@@ -371,13 +370,13 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                                                             pDepthMode,
                                                             K4A_DEPTH_MODE_WFOV_UNBINNED,
                                                             depthSettingsEditable);
-        
+
         //// New line
-        //depthModeUpdated |= ImGuiExtensions::K4ARadioButton("VGA-640x480  ",
-        //                                                    pDepthMode,
-        //                                                    K4A_DEPTH_MODE_640x480,
-        //                                                    depthSettingsEditable);
-        // New line
+        // depthModeUpdated |= ImGuiExtensions::K4ARadioButton("VGA-640x480  ",
+        //                                                     pDepthMode,
+        //                                                     K4A_DEPTH_MODE_640x480,
+        //                                                     depthSettingsEditable);
+        //  New line
         depthModeUpdated |=
             ImGuiExtensions::K4ARadioButton("Passive IR", pDepthMode, K4A_DEPTH_MODE_PASSIVE_IR, depthSettingsEditable);
 
@@ -408,9 +407,10 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         ImGui::SameLine();
         colorFormatUpdated |=
             ImGuiExtensions::K4ARadioButton("MJPG", pColorFormat, K4A_IMAGE_FORMAT_COLOR_MJPG, colorSettingsEditable);
-        //ImGui::SameLine();
-        //colorFormatUpdated |=
-        //    ImGuiExtensions::K4ARadioButton("NV12", pColorFormat, K4A_IMAGE_FORMAT_COLOR_NV12, colorSettingsEditable);
+        // ImGui::SameLine();
+        // colorFormatUpdated |=
+        //     ImGuiExtensions::K4ARadioButton("NV12", pColorFormat, K4A_IMAGE_FORMAT_COLOR_NV12,
+        //     colorSettingsEditable);
         ImGui::SameLine();
         colorFormatUpdated |=
             ImGuiExtensions::K4ARadioButton("YUY2", pColorFormat, K4A_IMAGE_FORMAT_COLOR_YUY2, colorSettingsEditable);
@@ -418,10 +418,10 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         // Uncompressed formats are only supported at 720p.
         //
         const char *imageFormatHelpMessage = "Not supported in NV12 or YUY2 mode!";
-   /*     const bool imageFormatSupportsHighResolution = m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_NV12 &&
-                                                       m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_YUY2;*/
+        /*     const bool imageFormatSupportsHighResolution = m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_NV12 &&
+                                                            m_config.ColorFormat != K4A_IMAGE_FORMAT_COLOR_YUY2;*/
 
-         const bool imageFormatSupportsHighResolution = true;
+        const bool imageFormatSupportsHighResolution = true;
         if (colorFormatUpdated || m_firstRun)
         {
             if (!imageFormatSupportsHighResolution)
@@ -481,18 +481,13 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
                                                                   colorSettingsEditable &&
                                                                       imageFormatSupportsHighResolution);
         ImGuiExtensions::K4AShowTooltip(imageFormatHelpMessage, !imageFormatSupportsHighResolution);
-        
+
 
         colorResolutionUpdated |= ImGuiExtensions::K4ARadioButton(" 480p",
                                                                   pColorResolution,
                                                                   K4A_COLOR_RESOLUTION_480P,
                                                                   colorSettingsEditable);
         */
-
-         colorResolutionUpdated |= ImGuiExtensions::K4ARadioButton(" 960p",
-                                                                  pColorResolution,
-                                                                  K4A_COLOR_RESOLUTION_960P,
-                                                                  colorSettingsEditable);
         ImGuiExtensions::K4AShowTooltip(imageFormatHelpMessage, !imageFormatSupportsHighResolution);
 
         ImGui::Unindent();
@@ -689,12 +684,10 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
     ImGui::SameLine();
     framerateUpdated |= ImGuiExtensions::K4ARadioButton(" 5 FPS", pFramerate, K4A_FRAMES_PER_SECOND_5, enableFramerate);
 
-   
-    //ImGuiExtensions::K4ACheckbox("Disable streaming LED", &m_config.DisableStreamingIndicator, !deviceIsStarted);
+    // ImGuiExtensions::K4ACheckbox("Disable streaming LED", &m_config.DisableStreamingIndicator, !deviceIsStarted);
 
     ImGui::Separator();
 
-    
     const bool imuSupported = m_config.EnableColorCamera || m_config.EnableDepthCamera;
     m_config.EnableImu &= imuSupported;
     ImGuiExtensions::K4ACheckbox("Enable IMU", &m_config.EnableImu, !deviceIsStarted && imuSupported);
@@ -710,14 +703,13 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
     else
     {
         m_config.EnableMicrophone = false;
-        //ImGui::Text("Microphone not detected!");
+        // ImGui::Text("Microphone not detected!");
     }
 
     ImGui::Separator();
-    
 
     //////////////////////////////////////////////////
-    
+
     if (ImGui::TreeNode("Internal Sync"))
     {
         ImGuiExtensions::K4ACheckbox("Synchronized images only",
@@ -771,7 +763,7 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
     if (ImGui::TreeNode("External Sync"))
     {
         /*
-        //TODO: Mega ªÒ»°≤ªµΩ¡¨Ω”◊¥Ã¨
+        //TODO: Mega Ëé∑Âèñ‰∏çÂà∞ËøûÊé•Áä∂ÊÄÅ
         ImGui::Text("Sync cable state");
         ImGuiExtensions::K4ARadioButton("In", m_syncInConnected, false);
         ImGui::SameLine();
@@ -782,10 +774,10 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
             RefreshSyncCableStatus();
         }
         */
-        
+
         const char *syncModesSupportedTooltip = "Requires at least one camera and a connected sync cable!";
         const bool syncModesSupported = //(m_syncInConnected || m_syncOutConnected) &&
-                                        (m_config.EnableColorCamera || m_config.EnableDepthCamera);
+            (m_config.EnableColorCamera || m_config.EnableDepthCamera);
         if (!syncModesSupported)
         {
             m_config.WiredSyncMode = K4A_WIRED_SYNC_MODE_STANDALONE;
@@ -793,7 +785,7 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
 
         auto *pSyncMode = reinterpret_cast<int *>(&m_config.WiredSyncMode);
         ImGuiExtensions::K4ARadioButton("Standalone", pSyncMode, K4A_WIRED_SYNC_MODE_STANDALONE, !deviceIsStarted);
-        //ImGui::SameLine();
+        // ImGui::SameLine();
         ImGuiExtensions::K4ARadioButton("Master",
                                         pSyncMode,
                                         K4A_WIRED_SYNC_MODE_MASTER,
@@ -818,7 +810,6 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         ImGui::PopItemWidth();
 
         ImGui::TreePop();
-        
     }
     /////////////////////////////////////////////////////////////////////////////
 
@@ -836,9 +827,9 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
 
         ImGui::Text("Build Config: %s", versionInfo.firmware_build == K4A_FIRMWARE_BUILD_RELEASE ? "Release" : "Debug");
         ImGui::Text("Signature type: %s",
-                    versionInfo.firmware_signature == K4A_FIRMWARE_SIGNATURE_MSFT ?
-                        "Microsoft" :
-                        versionInfo.firmware_signature == K4A_FIRMWARE_SIGNATURE_TEST ? "Test" : "Unsigned");
+                    versionInfo.firmware_signature == K4A_FIRMWARE_SIGNATURE_MSFT ? "Microsoft" :
+                    versionInfo.firmware_signature == K4A_FIRMWARE_SIGNATURE_TEST ? "Test" :
+                                                                                    "Unsigned");
 
         ImGui::TreePop();
     }
@@ -918,23 +909,28 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
 
 void K4ADeviceDockControl::Start()
 {
+    GLFWwindow *currentContext = glfwGetCurrentContext();
+    glfwMakeContextCurrent(NULL);
+
     const bool enableCameras = m_config.EnableColorCamera || m_config.EnableDepthCamera;
     if (enableCameras)
     {
-        //ø™œ‡ª˙
         bool camerasStarted = StartCameras();
-        //ø™Imu
+
         if (camerasStarted && m_config.EnableImu)
         {
             StartImu();
         }
     }
-    //ø™¬ÛøÀ∑Á
-    //if (m_config.EnableMicrophone)
+
+    glfwMakeContextCurrent(currentContext);
+
+    // don't support
+    // if (m_config.EnableMicrophone)
     //{
-    //    StartMicrophone();
-    //}
-    //…Ë÷√Viewer ≤ªÕ¨µƒ¥∞ø⁄¿‡–Õ,»Á2Dœ‘ æ£¨3Dœ‘ æ
+    //     StartMicrophone();
+    // }
+
     SetViewType(K4AWindowSet::ViewType::Normal);
     m_paused = false;
 }
@@ -945,9 +941,8 @@ void K4ADeviceDockControl::Stop()
 
     StopCameras();
     StopImu();
-    //StopMicrophone();
+    // StopMicrophone();
 }
-
 
 bool K4ADeviceDockControl::StartCameras()
 {
@@ -988,19 +983,18 @@ bool K4ADeviceDockControl::StartCameras()
                 //
                 pollingTimeout = SubordinateModeStartupTimeout;
             }
-            return PollSensor<k4a::capture>("Cameras",
-                                            pDevice,
-                                            pCameraDataSource,
-                                            pPaused,
-                                            pCamerasStarted,
-                                            pAbortInProgress,
-                                            [](k4a::device *device,
-                                               k4a::capture *capture,
-                                               std::chrono::milliseconds timeout) {
-                                                return device->get_capture(capture, timeout);
-                                            },
-                                            [](k4a::device *device) { device->stop_cameras(); },
-                                            pollingTimeout);
+            return PollSensor<k4a::capture>(
+                "Cameras",
+                pDevice,
+                pCameraDataSource,
+                pPaused,
+                pCamerasStarted,
+                pAbortInProgress,
+                [](k4a::device *device, k4a::capture *capture, std::chrono::milliseconds timeout) {
+                    return device->get_capture(capture, timeout);
+                },
+                [](k4a::device *device) { device->stop_cameras(); },
+                pollingTimeout);
         });
 
     return true;
@@ -1008,12 +1002,13 @@ bool K4ADeviceDockControl::StartCameras()
 
 void K4ADeviceDockControl::StopCameras()
 {
-    StopPollingThread(&m_cameraPollingThread,
-                      &m_device,
-                      [](k4a::device *device) { device->stop_cameras(); },
-                      &m_cameraDataSource,
-                      &m_camerasStarted,
-                      &m_camerasAbortInProgress);
+    StopPollingThread(
+        &m_cameraPollingThread,
+        &m_device,
+        [](k4a::device *device) { device->stop_cameras(); },
+        &m_cameraDataSource,
+        &m_camerasStarted,
+        &m_camerasAbortInProgress);
 }
 
 bool K4ADeviceDockControl::StartMicrophone()
@@ -1087,19 +1082,18 @@ bool K4ADeviceDockControl::StartImu()
                 //
                 pollingTimeout = SubordinateModeStartupTimeout;
             }
-            return PollSensor<k4a_imu_sample_t>("IMU",
-                                                pDevice,
-                                                pImuDataSource,
-                                                pPaused,
-                                                pImuStarted,
-                                                pAbortInProgress,
-                                                [](k4a::device *device,
-                                                   k4a_imu_sample_t *sample,
-                                                   std::chrono::milliseconds timeout) {
-                                                    return device->get_imu_sample(sample, timeout);
-                                                },
-                                                [](k4a::device *device) { device->stop_imu(); },
-                                                pollingTimeout);
+            return PollSensor<k4a_imu_sample_t>(
+                "IMU",
+                pDevice,
+                pImuDataSource,
+                pPaused,
+                pImuStarted,
+                pAbortInProgress,
+                [](k4a::device *device, k4a_imu_sample_t *sample, std::chrono::milliseconds timeout) {
+                    return device->get_imu_sample(sample, timeout);
+                },
+                [](k4a::device *device) { device->stop_imu(); },
+                pollingTimeout);
         });
 
     return true;
@@ -1107,12 +1101,13 @@ bool K4ADeviceDockControl::StartImu()
 
 void K4ADeviceDockControl::StopImu()
 {
-    StopPollingThread(&m_imuPollingThread,
-                      &m_device,
-                      [](k4a::device *device) { device->stop_imu(); },
-                      &m_imuDataSource,
-                      &m_imuStarted,
-                      &m_imuAbortInProgress);
+    StopPollingThread(
+        &m_imuPollingThread,
+        &m_device,
+        [](k4a::device *device) { device->stop_imu(); },
+        &m_imuDataSource,
+        &m_imuStarted,
+        &m_imuAbortInProgress);
 }
 
 void K4ADeviceDockControl::SetViewType(K4AWindowSet::ViewType viewType)
@@ -1130,7 +1125,7 @@ void K4ADeviceDockControl::SetViewType(K4AWindowSet::ViewType viewType)
             K4AViewerErrorManager::Instance().SetErrorStatus(errorBuilder.str());
         }
     }
-    
+
     switch (viewType)
     {
     case K4AWindowSet::ViewType::Normal:
@@ -1148,7 +1143,7 @@ void K4ADeviceDockControl::SetViewType(K4AWindowSet::ViewType viewType)
     case K4AWindowSet::ViewType::PointCloudViewer:
         try
         {
-            //ªÒ»°±Í∂®≤Œ ˝
+            // Ëé∑ÂèñÊ†áÂÆöÂèÇÊï∞
             k4a::calibration calib = m_device.get_calibration(m_config.DepthMode, m_config.ColorResolution);
             bool rgbPointCloudAvailable = m_config.EnableColorCamera &&
                                           m_config.ColorFormat == K4A_IMAGE_FORMAT_COLOR_BGRA32;

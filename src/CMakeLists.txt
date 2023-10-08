@@ -1,8 +1,15 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Consumers of this include directory need to #include "k4ainternal/header.h"
-set(K4A_PRIV_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../include ${CMAKE_CURRENT_BINARY_DIR}/sdk/include)
+if(${BUILD_OB_K4A_WRAPPER})
+    # Consumers of this include directory need to #include "k4ainternal/header.h"
+    set(K4A_PRIV_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../include ${CMAKE_CURRENT_BINARY_DIR}/orbbec/include)
+    add_subdirectory(orbbec)
+else()
+    # Consumers of this include directory need to #include "k4ainternal/header.h"
+    set(K4A_PRIV_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../include ${CMAKE_CURRENT_BINARY_DIR}/sdk/include)
+    add_subdirectory(sdk)
+endif()
 
 # Add folders in Alphabetical order to help reduce merge issues
 add_subdirectory(allocator)
@@ -28,8 +35,3 @@ add_subdirectory(tewrapper)
 add_subdirectory(transformation)
 add_subdirectory(usbcommand)
 
-if(${BUILD_OB_K4A_WRAPPER})
-    add_subdirectory(orbbec)
-else()
-    add_subdirectory(sdk)
-endif()
