@@ -5,16 +5,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(frame_queue)
 add_subdirectory(imu_sync)
 
-option(USER_LOCAL_ORBBECSDK "Use local OrbbecSDK" OFF)
-if(USER_LOCAL_ORBBECSDK)
-    set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK_local)
-else()
-    set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK)
-endif()
-
-# Find OrbbecSDK
-find_package(OrbbecSDK REQUIRED)
-
 # Create K4A library
 add_library(k4a SHARED
             ob_k4a_impl.c
@@ -52,6 +42,15 @@ target_include_directories(k4a PUBLIC
     $<BUILD_INTERFACE:${K4A_INCLUDE_DIR}>
     $<INSTALL_INTERFACE:include>
     )
+
+# Find OrbbecSDK
+option(USER_LOCAL_ORBBECSDK "Use local OrbbecSDK" OFF)
+if(USER_LOCAL_ORBBECSDK)
+    set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK_local)
+else()
+    set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK)
+endif()
+find_package(OrbbecSDK REQUIRED)
 
 # Link in libraries
 target_link_libraries(k4a PRIVATE
@@ -116,8 +115,6 @@ install(
         COMPONENT
             runtime
 )
-
-install(FILES ${OrbbecSDK_DLLS} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
