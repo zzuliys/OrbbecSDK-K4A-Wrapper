@@ -46,8 +46,10 @@ target_include_directories(k4a PUBLIC
 # Find OrbbecSDK
 option(USER_LOCAL_ORBBECSDK "Use local OrbbecSDK" OFF)
 if(USER_LOCAL_ORBBECSDK)
+    # custom path such as:
     set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK_local)
 else()
+    # git submodule
     set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK)
 endif()
 find_package(OrbbecSDK REQUIRED)
