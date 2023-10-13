@@ -1093,6 +1093,7 @@ typedef struct _k4a_calibration_camera_t
 
 /** Calibration type representing device calibration.
  *
+ *
  * \xmlonly
  * <requirements>
  *   <requirement name="Header">k4atypes.h (include k4a/k4a.h)</requirement>
