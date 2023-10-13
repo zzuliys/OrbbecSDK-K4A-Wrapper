@@ -1,46 +1,76 @@
-# OrbbecSDK-K4A-Wrapper
+# Orbbec SDK K4A Wrapper
 
-![stability](https://img.shields.io/badge/stability-unstable-yellow)
-
-This branch is contain the K4A wrapper for OrbbecSDK. It's mean that user can use this library to develop the application with K4A API, but use to access the Orbbec camera.
-Also user can use this library to replace native K4A library in your application to access the Orbbec camera without any code change.
+Welcome to the Orbbec SDK K4A Wrapper!
 
 *This repo is forked from [Azure Kinect Sensor SDK](https://github.com/microsoft/Azure-Kinect-Sensor-SDK)*
 
-*This branch is base on release/1.4.x, and use new impl code base on [OrbbecSDK](https://github.com/orbbec/OrbbecSDK) to replace the k4a implementation.*
+*This branch is base on release/1.4.x, and use new impl code base on [Orbbec SDK](https://github.com/orbbec/OrbbecSDK) to replace the k4a implementation.*
 
 *The usage of this library is same as [Native K4A](./README_K4A.md)*
 
-## What we did?
+## Introduction
 
-The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source code in [k4a.c](./src/sdk/k4a.c) is the implementation of K4A API. We have reimplemented the K4A API in [ob_k4a_impl.c](./src/orbbec/ob_k4a_impl.c) with OrbbecSDK, and keep the same effect as the original K4A API. Therefore, all functions called on user's side will be redirected to the OrbbecSDK, and user can access the Orbbec camera like the K4A device.
+This repository contains the K4A wrapper for Orbbec SDK, allowing users to develop applications using the K4A API and access Orbbec cameras. Additionally, users can replace the native K4A library in their application with this library without any code changes.
 
-![OrbbecSDK-K4A-Wrapper](src/orbbec/docs/resource/OrbbecSDK-K4A-Wrapper.png)
 
-## Supported camera and platform
+**What we did?**
 
-Orbbec Femto Mega: Windows10+, Ubuntu20.04+; x64
-Orbbec Femto Bolt: Windows10+, Ubuntu18.04+; x64
+The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source code in [k4a.c](./src/sdk/k4a.c) is the implementation of K4A API. We have reimplemented the K4A API in [ob_k4a_impl.c](./src/orbbec/ob_k4a_impl.c) with Orbbec SDK, and keep the same effect as the original K4A API. Therefore, all functions called on user's side will be redirected to the Orbbec SDK, and user can access the Orbbec camera like the K4A device.
 
-*Other Orbbec cameras and platforms without test, don't use it in production environment.*
+![Orbbec SDK K4A Wrapper](src/orbbec/docs/resource/OrbbecSDK-K4A-Wrapper.png)
 
-## How to build
 
-### Get source code
+## Why use the Orbbec SDK K4A Wrapper
 
-```bash
-git clone https://github.com/orbbec/OrbbecSDK-K4A-Wrapper.git
-# Please make sure you have switched to the branch with the prefix "ob/", for example: git checkout ob/feature/1.1.x.
-git submodule update --init --recursive
+The Wrapper enables you to get the most out of your orbbec camera. Features include:
+
+* Depth camera access
+* RGB camera access and control (e.g. exposure and white balance)
+* Motion sensor (gyroscope and accelerometer) access
+* Synchronized Depth-RGB camera streaming with configurable delay between cameras
+* External device synchronization control with configurable delay offset between devices
+* Camera frame meta-data access for image resolution, timestamp and temperature
+* Device calibration data access
+
+## Installation
+
+### Environment setup
+
+#### Windows
+
+Timestamp(metadata) registration：
+
+``` powershell
+# Running as Administrator using PowerShell
+cd src/orbbec/OrbbecSDK/misc/scripts
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\obsensor_metadata_win10.ps1 -op install_all
 ```
 
-### Build && install
+#### Linux
 
-**It is the same as Native K4A, please refer to: [Building and Dependencies](./docs/building.md)**
+Install udev rules file：
 
-Quick Instructions:
+ ``` bash
+ cd src/orbbec/OrbbecSDK/misc/scripts
+ sudo chmod +x ./install_udev_rules.sh
+ ./install_udev_rules.sh
+ # Once complete, the orbbec camera is available without being 'root'.
+ ```
 
-* Windows:
+## Documentation
+
+API documentation is avaliable [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper/bolt-1.7.x-dev/).
+
+## Building
+
+**It is identical to Native K4A, please refer to: [Building and Dependencies](docs/building.md)**
+
+### Quick Instructions
+
+#### Windows:
+
+* Ninja:
 
     ```powershell
     cd OrbbecSDK-K4A-Wrapper
@@ -51,53 +81,102 @@ Quick Instructions:
     ninja install
     ```
 
-* Linux
+* cmake:
+
+    ```powershell
+    cd OrbbecSDK-K4A-Wrapper
+    mkdir build
+    cd build
+    cmake ../
+    cmake --build .
+    cmake --install .
+    ```
+
+#### Linux
+
+* install dependencs:
 
     ```bash
-    cd OrbbecSDK-K4A-Wrapper
-    mkdir build && cd build
-    sudo cmake .. -G Ninja
-    sudo ninja
-    sudo ninja install
+    sudo apt update
+    sudo apt install -y \
+        pkg-config \
+        ninja-build \
+        doxygen \
+        clang \
+        gcc-multilib \
+        g++-multilib \
+        python3 \
+        nasm
+
+    sudo apt install -y \
+        libgl1-mesa-dev \
+        libsoundio-dev \
+        libvulkan-dev \
+        libx11-dev \
+        libxcursor-dev \
+        libxinerama-dev \
+        libxrandr-dev \
+        libusb-1.0-0-dev \
+        libssl-dev \
+        libudev-dev \
+        mesa-common-dev \
+        uuid-dev
     ```
-### Environment setup
 
-* Linux:
-    Install udev rules file
+*  building:
+    * ninja:
 
-    ``` bash
-    cd src/orbbec/OrbbecSDK/misc/scripts
-    sudo chmod +x ./install_udev_rules.sh
-    ./install_udev_rules.sh
-    ```
+        ```bash
+        cd OrbbecSDK-K4A-Wrapper
+        mkdir build && cd build
+        sudo cmake .. -G Ninja
+        sudo ninja
+        sudo ninja install
+        ```
 
-* Windows:
-    Timestamp(metadata) registration
-    ``` powershell
-    # Running as Administrator using PowerShell
-    cd src/orbbec/OrbbecSDK/misc/scripts
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-    .\obsensor_metadata_win10.ps1 -op install_all
-    ```
+    * cmake
 
-### Run
+        ```bash
+        cd OrbbecSDK-K4A-Wrapper
+        mkdir build && cd build
+        sudo cmake ..
+        sudo make -j8
+        sudo make install
+        ```
 
-Connect the Orbbec camera to your PC and run the k4aviewer.
-```shell
-cd build/bin
-./k4aviewer  # win: ./k4aviewer.exe
-```
+## Versioning
 
-## Documentation
+| **products list** | **firmware version** |**platform**|
+| --- | --- | --- |
+| Orbbec Femto Bolt  | 1.0.6  |Windows10+, Ubuntu20.04+ |
+| Orbbec Femto Mega  | 1.1.7  |Windows10+, Ubuntu18.04+ |
 
-API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper/bolt-1.7.x-dev/).
 
-## Attention
+## Testing
+
+For information on writing or running tests, please see [testing.md](docs/testing.md)
+
+## Feedback
+
+For Orbbec SDK K4A Wrapper feedback or to report a bug, please file a [GitHub Issue](https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/issues). For general suggestions or ideas, visit our [feedback forum](https://3dclub.orbbec3d.com/).
+
+## Sample Code
+
+As the Orbbec SDK K4A Wrapper directly uses the Azure Kinect Sensor SDK API, user can directly refer to the relevant examples of the Azure Kinect Sensor SDK：
+
+* In this repository: [OrbbecSDK-K4A-Wrapper\examples](https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/tree/ob/dev/1.8.x/examples)- each example has a readme page that describes it and the steps to set it up.
+
+* [Azure-Kinect-Samples](https://github.com/microsoft/Azure-Kinect-Samples) repository. There are multiple examples of how to use both Sensor and Body tracking SDKs.
+
+## Q&A
 
 1. The library of this branch is not support the K4A device, please use the [Native K4A](https://github.com/microsoft/Azure-Kinect-Sensor-SDK) library to access the K4A device.
-2. The OrbbecSDK K4A Wrapper is aim to provide the same API as the K4A, but it's not full API for OrbbecSDK and feature for Orbbec camera. If you want to use the full feature of Orbbec camera, please use the [OrbbecSDK](https://github.com/orbbec/OrbbecSDK) directly.
-3. For Linux user, there may be an issue with the initialization of DepthEngine when using Orbbec Femto Bolt due to modifications made by Microsoft in the new version of DepthEngine. This can cause failure during the start of the depth stream. The reason for this is that simultaneous use of multiple OpenGL contexts may result in conflicts. User can try to resolve it follow this:
-   [https://www.khronos.org/opengl/wiki/OpenGL_and_multithreading](https://www.khronos.org/opengl/wiki/OpenGL_and_multithreading)
+
+2. The Orbbec SDK K4A Wrapper is aim to provide the same API as the K4A, but it's not full API for Orbbec SDK and feature for Orbbec camera. If you want to use the full feature of Orbbec camera, please use the [Orbbec SDK](https://github.com/orbbec/OrbbecSDK) directly.
+
+3. For Linux user, there may be an issue with the initialization of DepthEngine when using Orbbec Femto Bolt due to modifications made by Microsoft in the new version of DepthEngine. This can cause failure during the start of the depth stream. The reason for this is that simultaneous use of multiple OpenGL contexts may result in conflicts. User can try to resolve it follow this: [https://www.khronos.org/opengl/wiki/OpenGL_and_multithreading](https://www.khronos.org/opengl/wiki/OpenGL_and_multithreading)
+
+   For example：
 
     ``` c++
     // file: tools/k4aviewer/k4adevicedockcontrol.cpp
@@ -108,3 +187,15 @@ API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4
 
     glfwMakeContextCurrent(currentContext); // restore the current context
     ```
+
+## Join Our Developer Program
+
+Complete your developer profile [here](https://3dclub.orbbec3d.com/) to get connected with our Mixed Reality Developer Program.
+
+## Reporting Security Issues
+
+Security issues and bugs should be reported privately, via email, to the administrators at <[it@orbbec.com](mailto:it@orbbec.com)>.
+
+## License Support for Orbbec SDK K4A Wrapper
+
+[MIT License](LICENSE)
