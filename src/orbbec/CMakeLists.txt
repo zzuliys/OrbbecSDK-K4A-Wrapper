@@ -43,7 +43,7 @@ target_include_directories(k4a PUBLIC
     $<INSTALL_INTERFACE:include>
     )
 
-# Find OrbbecSDK
+# Find Orbbec SDK
 option(USER_LOCAL_ORBBECSDK "Use local OrbbecSDK" OFF)
 if(USER_LOCAL_ORBBECSDK)
     # custom path such as:

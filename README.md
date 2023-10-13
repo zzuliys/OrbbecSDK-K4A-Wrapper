@@ -60,7 +60,7 @@ Install udev rules file：
 
 ## Documentation
 
-API documentation is avaliable [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper/bolt-1.7.x-dev/).
+API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper).
 
 ## Building
 

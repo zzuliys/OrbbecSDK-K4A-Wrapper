@@ -25,7 +25,7 @@ k4a_result_t check_ob_error(ob_error *error)
         auto msg = ob_error_message(error);
         auto func = ob_error_function(error);
         auto exception = ob_error_exception_type(error);
-        LOG_ERROR("Inner OrbbecSDK error: %s, function: %s, exception: %d", msg, func, exception);
+        LOG_ERROR("Inner Orbbec SDK error: %s, function: %s, exception: %d", msg, func, exception);
         ob_delete_error(error);
         return K4A_RESULT_FAILED;
     }
