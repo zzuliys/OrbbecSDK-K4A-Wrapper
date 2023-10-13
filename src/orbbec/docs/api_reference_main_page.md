@@ -1,4 +1,4 @@
-# OrbbecSDK-K4A-Wrapper API Reference
+# Orbbec SDK K4A Wrapper API Reference
 
 ## English
 

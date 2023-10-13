@@ -8,7 +8,7 @@ if(Doxygen_FOUND)
     add_custom_target(ob_k4a_api_doc ALL
         COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT "Generating OrbbecSDK-K4A-Wrapper API Reference documentation with Doxygen"
+        COMMENT "Generating Orbbec SDK K4A Wrapper API Reference documentation with Doxygen"
         VERBATIM
     )
 endif()
