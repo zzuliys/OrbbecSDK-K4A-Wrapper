@@ -17,7 +17,7 @@ This repository contains the K4A wrapper for Orbbec SDK, allowing users to devel
 
 The [k4a.h](./include/k4a/k4a.h) is the header file of K4A API, and the source code in [k4a.c](./src/sdk/k4a.c) is the implementation of K4A API. We have reimplemented the K4A API in [ob_k4a_impl.c](./src/orbbec/ob_k4a_impl.c) with Orbbec SDK, and keep the same effect as the original K4A API. Therefore, all functions called on user's side will be redirected to the Orbbec SDK, and user can access the Orbbec camera like the K4A device.
 
-![Orbbec SDK K4A Wrapper](src/orbbec/docs/resource/OrbbecSDK-K4A-Wrapper.png)
+![Orbbec SDK K4A Wrapper](src/orbbec/docs/resource/OrbbecSDKK4AWrapper.png)
 
 
 ## Why use the Orbbec SDK K4A Wrapper
@@ -164,7 +164,7 @@ For Orbbec SDK K4A Wrapper feedback or to report a bug, please file a [GitHub Is
 
 As the Orbbec SDK K4A Wrapper directly uses the Azure Kinect Sensor SDK API, user can directly refer to the relevant examples of the Azure Kinect Sensor SDK：
 
-* In this repository: [OrbbecSDK-K4A-Wrapper\examples](https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/tree/ob/dev/1.8.x/examples)- each example has a readme page that describes it and the steps to set it up.
+* In this repository: [examples](https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/tree/ob/dev/1.8.x/examples)- each example has a readme page that describes it and the steps to set it up.
 
 * [Azure-Kinect-Samples](https://github.com/microsoft/Azure-Kinect-Samples) repository. There are multiple examples of how to use both Sensor and Body tracking SDKs.
 

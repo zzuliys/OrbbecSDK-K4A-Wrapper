@@ -26,7 +26,7 @@ project(K4A LANGUAGES C CXX
 option(K4A_BUILD_DOCS "Build K4A doxygen documentation" OFF)
 option(K4A_MTE_VERSION "Skip FW version check" OFF)
 option(K4A_SOURCE_LINK "Enable source linking on MSVC" OFF)
-option(BUILD_OB_K4A_WRAPPER "Build K4A wrapper for OrbbecSDK" ON)
+option(BUILD_OB_K4A_WRAPPER "Build K4A wrapper for Orbbec SDK" ON)
 
 include(GitCommands)
 
