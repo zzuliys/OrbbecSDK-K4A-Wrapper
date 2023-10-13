@@ -21,8 +21,8 @@ extern "C" {
 #endif
 
 #define WRAPPER_VERSION_MAJOR 1
-#define WRAPPER_VERSION_MINOR 0
-#define WRAPPER_VERSION_PATCH 11
+#define WRAPPER_VERSION_MINOR 8
+#define WRAPPER_VERSION_PATCH 1
 
 /**
  * \defgroup Functions Functions
@@ -1742,7 +1742,7 @@ K4A_EXPORT k4a_result_t k4a_calibration_get_from_raw(char *raw_calibration,
  * rotation and a 3D translation. If \p source_camera and \p target_camera are the same, then \p target_point3d_mm will
  * be identical to \p source_point3d_mm.
  *
- * \relates k4a_calibration_t
+ * \relates _k4a_calibration_t
  *
  * \xmlonly
  * <requirements>
@@ -1803,7 +1803,7 @@ K4A_EXPORT k4a_result_t k4a_calibration_3d_to_3d(const k4a_calibration_t *calibr
  * according to the intrinsic camera model, \p valid is set to 0. If it is valid, \p valid will be set to 1. The user
  * should not use the value of \p target_point3d_mm if \p valid was set to 0.
  *
- * \relates k4a_calibration_t
+ * \relates _k4a_calibration_t
  *
  * \xmlonly
  * <requirements>
@@ -1859,7 +1859,7 @@ K4A_EXPORT k4a_result_t k4a_calibration_2d_to_3d(const k4a_calibration_t *calibr
  * set to 0. If it is valid, \p valid will be set to 1. The user should not use the value of \p target_point2d if \p
  * valid was set to 0.
  *
- * \relates k4a_calibration_t
+ * \relates _k4a_calibration_t
  *
  * \xmlonly
  * <requirements>
@@ -1922,7 +1922,7 @@ K4A_EXPORT k4a_result_t k4a_calibration_3d_to_2d(const k4a_calibration_t *calibr
  * to 0. If it is valid, \p valid will be set to 1. The user should not use the value of \p target_point2d if \p valid
  * was set to 0.
  *
- * \relates k4a_calibration_t
+ * \relates _k4a_calibration_t
  *
  * \xmlonly
  * <requirements>
@@ -1977,7 +1977,7 @@ K4A_EXPORT k4a_result_t k4a_calibration_2d_to_2d(const k4a_calibration_t *calibr
  * to 0. If it is valid, \p valid will be set to 1. The user should not use the value of \p target_point2d if \p valid
  * was set to 0.
  *
- * \relates k4a_calibration_t
+ * \relates _k4a_calibration_t
  *
  * \xmlonly
  * <requirements>
@@ -2009,7 +2009,7 @@ K4A_EXPORT k4a_result_t k4a_calibration_color_2d_to_depth_2d(const k4a_calibrati
  * \remarks
  * The transformation handle must be destroyed with k4a_transformation_destroy() when it is no longer to be used.
  *
- * \relates k4a_calibration_t
+ * \relates _k4a_calibration_t
  *
  * \xmlonly
  * <requirements>
