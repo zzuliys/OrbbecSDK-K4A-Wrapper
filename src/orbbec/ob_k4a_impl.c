@@ -677,7 +677,7 @@ k4a_result_t k4a_device_start_imu(k4a_device_t device_handle)
             ob_accel_full_scale_range accel_range = ob_accel_stream_profile_full_scale_range(profile, &ob_err);
             CHECK_OB_ERROR_CONTINUE(ob_err);
 
-            if (accel_rate == OB_SAMPLE_RATE_500_HZ && accel_range == OB_ACCEL_FS_4g)
+            if (accel_rate == OB_SAMPLE_RATE_200_HZ && accel_range == OB_ACCEL_FS_4g)
             {
                 break;
             }
@@ -751,7 +751,7 @@ k4a_result_t k4a_device_start_imu(k4a_device_t device_handle)
             ob_gyro_full_scale_range gyro_range = ob_gyro_stream_profile_full_scale_range(profile, &ob_err);
             CHECK_OB_ERROR_CONTINUE(ob_err);
 
-            if (gyro_rate == OB_SAMPLE_RATE_500_HZ && gyro_range == OB_GYRO_FS_500dps)
+            if (gyro_rate == OB_SAMPLE_RATE_200_HZ && gyro_range == OB_GYRO_FS_500dps)
             {
                 break;
             }

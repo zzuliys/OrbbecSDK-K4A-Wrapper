@@ -341,6 +341,8 @@ public:
 
     /** Get the image exposure time in microseconds
      *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+     *
      * \sa k4a_image_get_exposure_usec
      */
     std::chrono::microseconds get_exposure() const noexcept
@@ -350,6 +352,8 @@ public:
 
     /** Get the image white balance in Kelvin (color images only)
      *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+     *
      * \sa k4a_image_get_white_balance
      */
     uint32_t get_white_balance() const noexcept
@@ -358,6 +362,8 @@ public:
     }
 
     /** Get the image's ISO speed (color images only)
+     *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
      *
      * \sa k4a_image_get_white_balance
      */
@@ -377,6 +383,8 @@ public:
 
     /** Set the image's exposure time in microseconds (color images only)
      *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+     *
      * \sa k4a_image_set_exposure_time_usec
      */
     void set_exposure_time(std::chrono::microseconds exposure) noexcept
@@ -386,6 +394,8 @@ public:
 
     /** Set the white balance of the image (color images only)
      *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+     *
      * \sa k4a_image_set_white_balance
      */
     void set_white_balance(uint32_t white_balance) noexcept
@@ -394,6 +404,8 @@ public:
     }
 
     /** Set the ISO speed of the image (color images only)
+     *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
      *
      * \sa k4a_image_set_iso_speed
      */
@@ -602,6 +614,8 @@ public:
 
     /** Set the temperature associated with the capture in Celsius.
      *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+     *
      * \sa k4a_capture_set_temperature_c
      */
     void set_temperature_c(float temperature_c) noexcept
@@ -610,6 +624,8 @@ public:
     }
 
     /** Get temperature (in Celsius) associated with the capture.
+     *
+     * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
      *
      * \sa k4a_capture_get_temperature_c
      */

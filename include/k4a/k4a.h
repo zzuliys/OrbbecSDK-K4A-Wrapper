@@ -102,6 +102,8 @@ K4A_EXPORT k4a_result_t k4a_set_debug_message_handler(k4a_logging_message_cb_t *
 
 /** Sets the callback functions for the SDK allocator
  *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+ *
  * \param allocate
  * The callback function to allocate memory. When the SDK requires memory allocation this callback will be
  * called and the application can provide a buffer and a context.
@@ -547,6 +549,8 @@ K4A_EXPORT void k4a_capture_set_ir_image(k4a_capture_t capture_handle, k4a_image
 
 /** Set the temperature associated with the capture.
  *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+ *
  * \param capture_handle
  * Capture handle to set the temperature on.
  *
@@ -566,6 +570,8 @@ K4A_EXPORT void k4a_capture_set_ir_image(k4a_capture_t capture_handle, k4a_image
 K4A_EXPORT void k4a_capture_set_temperature_c(k4a_capture_t capture_handle, float temperature_c);
 
 /** Get the temperature associated with the capture.
+ *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
  *
  * \param capture_handle
  * Capture handle to retrieve the temperature from.
@@ -937,6 +943,8 @@ K4A_EXPORT uint64_t k4a_image_get_system_timestamp_nsec(k4a_image_t image_handle
 
 /** Get the image exposure in microseconds.
  *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+ *
  * \param image_handle
  * Handle of the image for which the get operation is performed on.
  *
@@ -961,6 +969,8 @@ K4A_EXPORT uint64_t k4a_image_get_exposure_usec(k4a_image_t image_handle);
 
 /** Get the image white balance.
  *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+ *
  * \param image_handle
  * Handle of the image for which the get operation is performed on.
  *
@@ -984,6 +994,8 @@ K4A_EXPORT uint64_t k4a_image_get_exposure_usec(k4a_image_t image_handle);
 K4A_EXPORT uint32_t k4a_image_get_white_balance(k4a_image_t image_handle);
 
 /** Get the image ISO speed.
+ *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
  *
  * \param image_handle
  * Handle of the image for which the get operation is performed on.
@@ -1093,6 +1105,8 @@ K4A_EXPORT void k4a_image_set_system_timestamp_nsec(k4a_image_t image_handle, ui
 
 /** Set the exposure time, in microseconds, of the image.
  *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+ *
  * \param image_handle
  * Handle of the image to set the exposure time on.
  *
@@ -1146,6 +1160,8 @@ K4A_DEPRECATED_EXPORT void k4a_image_set_exposure_time_usec(k4a_image_t image_ha
 
 /** Set the white balance of the image.
  *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
+ *
  * \param image_handle
  * Handle of the image to set the white balance on.
  *
@@ -1170,6 +1186,8 @@ K4A_DEPRECATED_EXPORT void k4a_image_set_exposure_time_usec(k4a_image_t image_ha
 K4A_EXPORT void k4a_image_set_white_balance(k4a_image_t image_handle, uint32_t white_balance);
 
 /** Set the ISO speed of the image.
+ *
+ * \attention For the Orbbec SDK K4A wrapper, this function is not yet supported.
  *
  * \param image_handle
  * Handle of the image to set the ISO speed on.
@@ -1629,6 +1647,9 @@ K4A_EXPORT k4a_result_t k4a_device_get_calibration(k4a_device_t device_handle,
 
 /** Get the device jack status for the synchronization in and synchronization out connectors.
  *
+ * \attention The Orbbec device does not support retrieving the jack connection status, so this function will always
+ * return false (disconnected).
+ *
  * \param device_handle
  * Handle obtained by k4a_device_open().
  *
@@ -1641,8 +1662,6 @@ K4A_EXPORT k4a_result_t k4a_device_get_calibration(k4a_device_t device_handle,
  * \returns
  * ::K4A_RESULT_SUCCEEDED if the connector status was successfully read.
  *
- * \attention The Orbbec device does not support retrieving the jack connection status, so this function will always
- * return false (disconnected).
  *
  * \relates k4a_device_t
  *
