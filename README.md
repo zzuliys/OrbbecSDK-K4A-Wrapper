@@ -34,6 +34,14 @@ The Wrapper enables you to get the most out of your orbbec camera. Features incl
 
 ## Installation
 
+### Get source code
+
+```bash
+git clone https://github.com/orbbec/OrbbecSDK-K4A-Wrapper.git
+# Please make sure you have switched to the branch with the prefix "ob/", for example: git checkout ob/feature/1.1.x.
+git submodule update --init --recursive
+``
+
 ### Environment setup
 
 #### Windows
