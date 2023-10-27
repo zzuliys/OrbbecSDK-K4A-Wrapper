@@ -189,12 +189,13 @@ static int capture(std::string output_dir, uint8_t deviceId = K4A_DEVICE_DEFAULT
             printf("Failed to get depth image from capture\n");
         }
 
+        // Get a color image
+        color_image = k4a_capture_get_color_image(capture);
         if (color_image == NULL)
         {
             printf("Failed to get color image from capture\n");
         }
-        // Get a color image
-        color_image = k4a_capture_get_color_image(capture);
+
         if (depth_image != NULL && color_image != NULL)
         {
             break;
