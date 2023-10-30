@@ -1777,7 +1777,8 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
     }
 
     if (!(config->color_format == K4A_IMAGE_FORMAT_COLOR_MJPG ||
-          config->color_format == K4A_IMAGE_FORMAT_COLOR_BGRA32 || config->color_format == K4A_IMAGE_FORMAT_COLOR_YUY2))
+          config->color_format == K4A_IMAGE_FORMAT_COLOR_BGRA32 ||
+          config->color_format == K4A_IMAGE_FORMAT_COLOR_YUY2 || config->color_format == K4A_IMAGE_FORMAT_COLOR_NV12))
     {
         LOG_ERROR("color format unsupport,[%s]", __func__);
         return K4A_RESULT_FAILED;
@@ -1980,8 +1981,7 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
             color_format = OB_FORMAT_YUYV;
             break;
         case K4A_IMAGE_FORMAT_COLOR_NV12:
-            // TODO:
-            color_format = OB_FORMAT_MJPG;
+            color_format = OB_FORMAT_NV12;
             break;
         default:
             break;

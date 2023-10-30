@@ -407,10 +407,10 @@ K4ADockControlStatus K4ADeviceDockControl::Show()
         ImGui::SameLine();
         colorFormatUpdated |=
             ImGuiExtensions::K4ARadioButton("MJPG", pColorFormat, K4A_IMAGE_FORMAT_COLOR_MJPG, colorSettingsEditable);
-        // ImGui::SameLine();
-        // colorFormatUpdated |=
-        //     ImGuiExtensions::K4ARadioButton("NV12", pColorFormat, K4A_IMAGE_FORMAT_COLOR_NV12,
-        //     colorSettingsEditable);
+        ImGui::SameLine();
+        colorFormatUpdated |=
+            ImGuiExtensions::K4ARadioButton("NV12", pColorFormat, K4A_IMAGE_FORMAT_COLOR_NV12,
+            colorSettingsEditable);
         ImGui::SameLine();
         colorFormatUpdated |=
             ImGuiExtensions::K4ARadioButton("YUY2", pColorFormat, K4A_IMAGE_FORMAT_COLOR_YUY2, colorSettingsEditable);
