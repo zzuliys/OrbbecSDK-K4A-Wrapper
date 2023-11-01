@@ -8,6 +8,9 @@
   <Import Project="..\..\k4a.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <bin_directory>..\..\..\..\build\bin</bin_directory>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProjectGuid>{8A14FB66-07CD-4E4C-A533-89DE0AFF4FCB}</ProjectGuid>
@@ -140,19 +143,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(K4aBinaryDirectory)\k4a.dll">
+    <Content Include="$(bin_directory)\k4a.dll">
       <Link>k4a.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(K4aBinaryDirectory)\k4a.pdb">
+    <Content Include="$(bin_directory)\k4a.pdb">
       <Link>k4a.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(K4aBinaryDirectory)\depthengine_2_0.dll">
+    <Content Include="$(bin_directory)\depthengine_2_0.dll">
       <Link>depthengine_2_0.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(K4aBinaryDirectory)\OrbbecSDK.dll">
+    <Content Include="$(bin_directory)\OrbbecSDK.dll">
       <Link>OrbbecSDK.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

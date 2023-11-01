@@ -11,12 +11,15 @@
     <CodeAnalysisRuleSet>..\..\AzureKinectSensorSDK.ruleset</CodeAnalysisRuleSet>
     <OutputPath>$(BaseOutputPath)\$(AssemblyName)\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <bin_directory>..\..\..\..\build\bin</bin_directory>
+  </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="$(K4aBinaryDirectory)\k4a.dll" Link="k4a.dll">
+    <Content Include="$(bin_directory)\k4a.dll" Link="k4a.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(K4aBinaryDirectory)\k4a.pdb" Link="k4a.pdb">
+    <Content Include="$(bin_directory)\k4a.pdb" Link="k4a.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
