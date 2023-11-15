@@ -46,6 +46,8 @@ k4a_result_t check_ob_error(ob_error *error);
 
 ob_context *get_ob_context_instance();
 
+void get_depthengine_context_instance();
+
 #ifdef __cplusplus
 }
 #endif
