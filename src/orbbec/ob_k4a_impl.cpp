@@ -27,13 +27,16 @@
 #include <frame_queue.h>
 
 #include "obmetadata.h"
-#include "ob_type_helper.h"
+#include "ob_type_helper.hpp"
 
 // System dependencies
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
+
+// cpp
+#include <memory>
 
 #ifdef __cplusplus
 extern "C" {
@@ -92,6 +95,10 @@ typedef struct _k4a_device_context_t
     calibration_t calibration;
 
     k4a_transformation_t transformation;
+
+#ifndef CACHE_OB_CONTEXT
+    std::shared_ptr<ob_context_handler> ob_context_handler;
+#endif
 } k4a_device_context_t;
 
 K4A_DECLARE_CONTEXT(k4a_device_t, k4a_device_context_t);
@@ -116,8 +123,8 @@ uint32_t k4a_device_get_installed_count(void)
 {
     ob_error *ob_err = NULL;
     uint32_t device_count = 0;
-
-    ob_context *context = get_ob_context_instance();
+    auto ob_context_handler = get_ob_context_handler_instance();
+    ob_context *context = ob_context_handler->context;
 
     ob_device_list *ob_dev_list = ob_query_device_list(context, &ob_err);
     CHECK_OB_ERROR_RETURN_VALUE(ob_err, 0);
@@ -243,7 +250,11 @@ k4a_result_t k4a_device_open(uint32_t index, k4a_device_t *device_handle)
     device_ctx->gyro_sensor = NULL;
     device_ctx->imusync = NULL;
 
-    ob_context *ob_ctx = get_ob_context_instance();
+    auto ob_context_handler = get_ob_context_handler_instance();
+    ob_context *ob_ctx = ob_context_handler->context;
+#ifndef CACHE_OB_CONTEXT
+    device_ctx->ob_context_handler = ob_context_handler;
+#endif
     ob_device_list *dev_list = NULL;
     ob_error *ob_err = NULL;
 
@@ -281,7 +292,8 @@ k4a_result_t init_device_context(k4a_device_t device_handle)
     RETURN_VALUE_IF_HANDLE_INVALID(K4A_RESULT_FAILED, k4a_device_t, device_handle);
     k4a_device_context_t *device_ctx = k4a_device_t_get_context(device_handle);
 
-    ob_context *ob_ctx = get_ob_context_instance();
+    auto ob_context_handler = get_ob_context_handler_instance();
+    ob_context *ob_ctx = ob_context_handler->context;
     ob_device_list *dev_list = NULL;
     ob_device_info *device_info = NULL;
     ob_error *ob_err = NULL;
@@ -464,7 +476,6 @@ void k4a_device_close(k4a_device_t device_handle)
         free(device_ctx->json);
         device_ctx->json = NULL;
     }
-
     k4a_device_t_destroy(device_handle);
 }
 
@@ -715,6 +726,8 @@ k4a_result_t k4a_device_start_imu(k4a_device_t device_handle)
     if (ob_err != NULL)
     {
         CHECK_OB_ERROR(ob_err);
+        ob_delete_sensor(gyro_sensor,  &ob_err);
+        CHECK_OB_ERROR(ob_err);
         ob_delete_sensor_list(sensor_list, &ob_err);
         CHECK_OB_ERROR(ob_err);
         ob_delete_stream_profile_list(accel_profile_list, &ob_err);
@@ -727,6 +740,8 @@ k4a_result_t k4a_device_start_imu(k4a_device_t device_handle)
     count = ob_stream_profile_list_count(gyro_profile_list, &ob_err);
     if (ob_err != NULL)
     {
+        CHECK_OB_ERROR(ob_err);
+        ob_delete_sensor(gyro_sensor,  &ob_err);
         CHECK_OB_ERROR(ob_err);
         ob_delete_sensor_list(sensor_list, &ob_err);
         CHECK_OB_ERROR(ob_err);
@@ -1718,6 +1733,8 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
     ob_device_info *dev_info = ob_device_get_device_info(device_ctx->device, &ob_err);
     int pid = ob_device_info_pid(dev_info, &ob_err);
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
+    ob_delete_device_info(dev_info, &ob_err);
+    CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
 
     if (pid == ORBBEC_MEGA_PID || pid == ORBBEC_BOLT_PID)
     {
@@ -1904,13 +1921,15 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
             {
 
                 ob_delete_pipeline(device_ctx->pipe, &ob_err);
+                device_ctx->pipe = NULL;
                 CHECK_OB_ERROR(ob_err);
 
-                device_ctx->pipe = NULL;
                 ob_delete_config(obConfig, &ob_err);
+                obConfig = NULL;
                 CHECK_OB_ERROR(ob_err);
 
                 ob_delete_stream_profile_list(depth_profiles, &ob_err);
+                depth_profiles = NULL;
                 CHECK_OB_ERROR(ob_err);
                 return K4A_RESULT_FAILED;
             }
@@ -1950,10 +1969,12 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
             if (config->depth_mode != K4A_DEPTH_MODE_PASSIVE_IR)
             {
                 ob_delete_stream_profile_list(depth_profiles, &ob_err);
+                depth_profiles = NULL;
                 CHECK_OB_ERROR(ob_err);
             }
 
             ob_delete_stream_profile_list(ir_profiles, &ob_err);
+            ir_profiles = NULL;
             CHECK_OB_ERROR(ob_err);
 
             return K4A_RESULT_FAILED;
@@ -2005,13 +2026,15 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
         {
 
             ob_delete_pipeline(device_ctx->pipe, &ob_err);
+            device_ctx->pipe= NULL;
             CHECK_OB_ERROR(ob_err);
 
-            device_ctx->pipe = NULL;
             ob_delete_config(obConfig, &ob_err);
+            obConfig = NULL;
             CHECK_OB_ERROR(ob_err);
 
             ob_delete_stream_profile_list(color_profiles, &ob_err);
+            color_profiles = NULL;
             CHECK_OB_ERROR(ob_err);
 
             if (config->depth_mode != K4A_DEPTH_MODE_OFF)
@@ -2019,10 +2042,12 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
                 if (config->depth_mode != K4A_DEPTH_MODE_PASSIVE_IR)
                 {
                     ob_delete_stream_profile_list(depth_profiles, &ob_err);
+                    depth_profiles = NULL;
                     CHECK_OB_ERROR(ob_err);
                 }
 
                 ob_delete_stream_profile_list(ir_profiles, &ob_err);
+                ir_profiles = NULL;
                 CHECK_OB_ERROR(ob_err);
             }
 
@@ -2053,17 +2078,43 @@ k4a_result_t k4a_device_start_cameras(k4a_device_t device_handle, const k4a_devi
     {
         ob_delete_stream_profile_list(depth_profiles, &ob_err);
         CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
+        depth_profiles = NULL;
 
         ob_delete_stream_profile_list(ir_profiles, &ob_err);
         CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
+        ir_profiles = NULL;
     }
 
     if (config->color_resolution != K4A_COLOR_RESOLUTION_OFF)
     {
         ob_delete_stream_profile_list(color_profiles, &ob_err);
         CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
+        color_profiles = NULL;
     }
-
+    if (color_profiles != NULL)
+    {
+        ob_delete_stream_profile_list(color_profiles, &ob_err);
+    }
+    if (color_profile != NULL)
+    {
+        ob_delete_stream_profile(color_profile, &ob_err);
+    }
+    if (depth_profiles != NULL)
+    {
+        ob_delete_stream_profile_list(depth_profiles, &ob_err);
+    }
+    if (depth_profile != NULL)
+    {
+        ob_delete_stream_profile(depth_profile, &ob_err);
+    }
+    if (ir_profiles != NULL)
+    {
+        ob_delete_stream_profile_list(ir_profiles, &ob_err);
+    }
+    if (ir_profile != NULL)
+    {
+        ob_delete_stream_profile(ir_profile, &ob_err);
+    }
     return result;
 }
 
@@ -2238,6 +2289,9 @@ k4a_result_t k4a_device_get_version(k4a_device_t device_handle, k4a_hardware_ver
 
     version->firmware_build = K4A_FIRMWARE_BUILD_RELEASE;
     version->firmware_signature = K4A_FIRMWARE_SIGNATURE_UNSIGNED;
+
+    ob_delete_device_info(dev_info, &ob_err);
+    CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
 
     return K4A_RESULT_SUCCEEDED;
 }
@@ -3219,6 +3273,11 @@ k4a_result_t k4a_device_get_calibration_from_orbbec_sdk(k4a_device_t device_hand
         return K4A_RESULT_FAILED;
     }
 
+    if(camera_param_list != NULL){
+        ob_delete_camera_param_list(camera_param_list, &ob_err);
+        CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
+    }
+
     ob_camera_intrinsic ob_depth_intrinsic = camera_param.depthIntrinsic;
     ob_camera_intrinsic ob_color_intrinsic = camera_param.rgbIntrinsic;
 
@@ -3343,6 +3402,8 @@ k4a_result_t k4a_device_get_calibration(k4a_device_t device_handle,
     ob_device_info *dev_info = ob_device_get_device_info(device_ctx->device, &ob_err);
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
     int pid = ob_device_info_pid(dev_info, &ob_err);
+    CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
+    ob_delete_device_info(dev_info, &ob_err);
     CHECK_OB_ERROR_RETURN_K4A_RESULT(ob_err);
     if (pid == ORBBEC_MEGA_PID || pid == ORBBEC_BOLT_PID)
     {

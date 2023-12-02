@@ -7,10 +7,14 @@ add_subdirectory(imu_sync)
 
 # Create K4A library
 add_library(k4a SHARED
-            ob_k4a_impl.c
+            ob_k4a_impl.cpp
             dll_main.c
             ob_type_helper.cpp
             ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+
+if(CACHE_OB_CONTEXT)
+target_compile_definitions(k4a PRIVATE -DCACHE_OB_CONTEXT)
+endif()
 
 # Generate k4a_export.h
 # This is a platform specific header defining the macros for the export functions

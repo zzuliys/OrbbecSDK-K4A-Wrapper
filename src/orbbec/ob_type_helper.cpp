@@ -1,12 +1,8 @@
-#include "ob_type_helper.h"
+#include "ob_type_helper.hpp"
 #include "k4ainternal/logging.h"
-#include "libobsensor/h/Version.h"
-#include "libobsensor/h/Device.h"
 
 #include <mutex>
-#include <vector>
 #include <algorithm>
-#include <memory>
 
 #if defined(_WIN32)
 #include <sys/timeb.h>
@@ -14,9 +10,6 @@
 #include <time.h>
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 k4a_result_t check_ob_error(ob_error *error)
 {
@@ -61,57 +54,32 @@ void orbbec_sdk_log(ob_log_severity severity, const char *message, void *user_da
     }
 }
 
-void on_device_changed_callback(ob_device_list *removed, ob_device_list *added, void *user_data);
-struct ob_context_handler
-{
-    ob_context_handler(ob_context *ctx) : context(ctx)
-    {
-        ob_error *error = nullptr;
-        auto device_list = ob_query_device_list(context, &error);
-        CHECK_OB_ERROR_RETURN(error);
-
-        auto device_count = ob_device_list_device_count(device_list, &error);
-        CHECK_OB_ERROR_RETURN(error);
-
-        for (uint32_t i = 0; i < device_count; i++)
-        {
-            auto uid = ob_device_list_get_device_uid(device_list, i, &error);
-            device_uid_list.push_back(uid);
-        }
-        ob_delete_device_list(device_list, &error);
-        CHECK_OB_ERROR_RETURN(error);
-
-        ob_set_device_changed_callback(context, on_device_changed_callback, this, &error);
-        CHECK_OB_ERROR_RETURN(error);
-    };
-
-    ~ob_context_handler()
-    {
-        if (context != nullptr)
-        {
-            ob_error *error = nullptr;
-            ob_delete_context(context, &error);
-            check_ob_error(error);
-        }
-    }
-    ob_context *context;
-    std::vector<std::string> device_uid_list;
-};
 
 std::mutex ob_ctx_mtx;
-std::shared_ptr<ob_context_handler> ob_context_instance = nullptr;
-ob_context *get_ob_context_instance()
-{
+#ifdef CACHE_OB_CONTEXT
+std::shared_ptr<ob_context_handler> ob_context_handler_instance = nullptr;
+#else
+std::weak_ptr<ob_context_handler> ob_context_handler_instance;
+#endif
+
+std::shared_ptr<ob_context_handler> get_ob_context_handler_instance(){
     std::lock_guard<std::mutex> lock(ob_ctx_mtx);
-    if (ob_context_instance == nullptr)
+    
+    #ifdef CACHE_OB_CONTEXT
+    auto handler = ob_context_handler_instance;
+    #else
+    auto handler = ob_context_handler_instance.lock();
+    #endif
+    if (handler == nullptr)
     {
+#ifdef CACHE_OB_CONTEXT
         LOG_INFO("Orbbec SDK Version:[%d.%d.%d]",
                  ob_get_major_version(),
                  ob_get_minor_version(),
                  ob_get_patch_version());
 
         LOG_INFO("Wrapper Version:[%d.%d.%d]", WRAPPER_VERSION_MAJOR, WRAPPER_VERSION_MINOR, WRAPPER_VERSION_PATCH);
-
+#endif
         ob_error *error = nullptr;
         ob_set_logger_callback(OB_LOG_SEVERITY_DEBUG, orbbec_sdk_log, nullptr, &error);
         if (K4A_RESULT_FAILED == check_ob_error(error))
@@ -124,10 +92,15 @@ ob_context *get_ob_context_instance()
         {
             return nullptr;
         }
-
-        ob_context_instance = std::make_shared<ob_context_handler>(context);
+        handler = std::make_shared<ob_context_handler>(context);
+        ob_context_handler_instance = handler;
     }
-    return ob_context_instance.get()->context;
+
+#ifdef CACHE_OB_CONTEXT
+    return ob_context_handler_instance;
+#else
+    return ob_context_handler_instance.lock();
+#endif
 }
 
 void on_device_changed_callback(ob_device_list *removed, ob_device_list *added, void *user_data)
@@ -177,7 +150,3 @@ void on_device_changed_callback(ob_device_list *removed, ob_device_list *added, 
         LOG_INFO("device added: %s, sn=%s", name, sn);
     }
 }
-
-#ifdef __cplusplus
-}
-#endif
