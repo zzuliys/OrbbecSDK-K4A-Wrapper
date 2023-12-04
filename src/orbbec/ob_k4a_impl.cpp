@@ -2306,8 +2306,8 @@ k4a_result_t k4a_device_get_sync_jack(k4a_device_t device_handle,
     UNREFERENCED_VALUE(device_handle);
     UNREFERENCED_VALUE(sync_in_jack_connected);
     UNREFERENCED_VALUE(sync_out_jack_connected);
-    sync_in_jack_connected = false;
-    sync_out_jack_connected = false;
+    *sync_in_jack_connected = false;
+    *sync_out_jack_connected = false;
     LOG_WARNING("The Orbbec device does not support retrieving the jack connection status, so this function will "
                 "always return false(disconnected).",
                 0);
