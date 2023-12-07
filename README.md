@@ -40,10 +40,10 @@ The following document describes how to seamlessly replace the Azure Kinect came
 
 https://orbbec.github.io/OrbbecSDK-K4A-Wrapper/src/orbbec/docs/Access_AKDK_Application_Software_with_Femto_Bolt.pdf
 
-### Option1：Release SDK package
+### Option1：Install from Release SDK package
 If you prefer not to compile the K4A Wrapper yourself, we recommend using our released SDK package. These released SDK packages have been tested and we highly recommend using them.
 
-https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/releases/tag/v1.8.3
+https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/releases/
 
 
 ### Option2: Install from source code
