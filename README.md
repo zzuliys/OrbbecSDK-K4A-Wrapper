@@ -32,9 +32,23 @@ The Wrapper enables you to get the most out of your orbbec camera. Features incl
 * Camera frame meta-data access for image resolution, timestamp and temperature
 * Device calibration data access
 
+
+
 ## Installation
 
-### Get source code
+The following document describes how to seamlessly replace the Azure Kinect camera with the Femto camera in a user's application without any modifications. Please carefully read the following document before using the Femto Bolt camera.
+
+https://orbbec.github.io/OrbbecSDK-K4A-Wrapper/src/orbbec/docs/Access_AKDK_Application_Software_with_Femto_Bolt.pdf
+
+### Option1：Release SDK package
+If you prefer not to compile the K4A Wrapper yourself, we recommend using our released SDK package. These released SDK packages have been tested and we highly recommend using them.
+
+https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/releases/tag/v1.8.3
+
+
+### Option2: Install from source code
+
+#### Get source code
 
 ```bash
 git clone https://github.com/orbbec/OrbbecSDK-K4A-Wrapper.git
@@ -42,41 +56,13 @@ git clone https://github.com/orbbec/OrbbecSDK-K4A-Wrapper.git
 git submodule update --init --recursive
 ```
 
-### Environment setup
+#### Building
 
-#### Windows
-
-Timestamp(metadata) registration：
-
-``` powershell
-# Running as Administrator using PowerShell
-cd src/orbbec/OrbbecSDK/misc/scripts
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-.\obsensor_metadata_win10.ps1 -op install_all
-```
-
-#### Linux
-
-Install udev rules file：
-
- ``` bash
- cd src/orbbec/OrbbecSDK/misc/scripts
- sudo chmod +x ./install_udev_rules.sh
- ./install_udev_rules.sh
- # Once complete, the orbbec camera is available without being 'root'.
- ```
-
-## Documentation
-
-API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper).
-
-## Building
 
 **It is identical to Native K4A, please refer to: [Building and Dependencies](docs/building.md)**
 
-### Quick Instructions
 
-#### Windows:
+##### Windows:
 
 * Ninja:
 
@@ -100,7 +86,7 @@ API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4
     cmake --install .
     ```
 
-#### Linux
+##### Linux
 
 * install dependencs:
 
@@ -152,6 +138,10 @@ API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4
         sudo make install
         ```
 
+## Documentation
+
+API documentation is available [here](https://orbbec.github.io/docs/OrbbecSDK_K4A_Wrapper).
+
 ## Versioning
 
 | **products list** | **firmware version** |**platform**|
@@ -195,6 +185,24 @@ As the Orbbec SDK K4A Wrapper directly uses the Azure Kinect Sensor SDK API, use
 
     glfwMakeContextCurrent(currentContext); // restore the current context
     ```
+
+4. Unable to obtain the device timestamp on the Windows platform
+``` powershell
+# Running as Administrator using PowerShell
+cd src/orbbec/OrbbecSDK/misc/scripts
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\obsensor_metadata_win10.ps1 -op install_all
+```
+
+5. How to execute an application on the Linux platform without using sudo.
+Install udev rules file：
+
+ ``` bash
+ cd src/orbbec/OrbbecSDK/misc/scripts
+ sudo chmod +x ./install_udev_rules.sh
+ ./install_udev_rules.sh
+ # Once complete, the orbbec camera is available without being 'root'.
+ ```
 
 ## Join Our Developer Program
 
