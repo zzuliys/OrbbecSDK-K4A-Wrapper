@@ -52,9 +52,15 @@ https://github.com/orbbec/OrbbecSDK-K4A-Wrapper/releases/
 
 ```bash
 git clone https://github.com/orbbec/OrbbecSDK-K4A-Wrapper.git
-# Please make sure you have switched to the branch with the prefix "ob/", for example: git checkout ob/feature/1.1.x.
 git submodule update --init --recursive
 ```
+
+#### Branch Introduction
+* **main branch**: The main branch is the default and primary branch,The code in this branch is stable and has been tested.
+
+* **develop branch**: The "develop" branch is the development branch that includes new features, but it is not stable.
+
+* **others branch**: The other branches are new feature branches that have not been merged into "develop" yet.
 
 #### Building
 
