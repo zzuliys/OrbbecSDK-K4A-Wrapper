@@ -4,6 +4,7 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(frame_queue)
 add_subdirectory(imu_sync)
+add_subdirectory(OrbbecSDK)
 
 # Create K4A library
 add_library(k4a SHARED
@@ -56,7 +57,7 @@ else()
     # git submodule
     set(OrbbecSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/OrbbecSDK)
 endif()
-find_package(OrbbecSDK REQUIRED)
+# find_package(OrbbecSDK REQUIRED)
 
 # Link in libraries
 target_link_libraries(k4a PRIVATE
