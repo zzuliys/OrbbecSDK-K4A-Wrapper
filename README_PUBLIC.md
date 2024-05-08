@@ -1,7 +1,8 @@
-# release v1.9.3
+# release v1.9.4
 ## Change List
-1. fix multi device sync bug;
-2. support for obtaining stride.
+1. update orbbecsdk version to v1.10.2;
+2. support green_screen sample;
+3. video frame timestamps for Femto Bolt modify microseconds (us).（Femto Bolt firmware version Need 1.1.1 or above）.
 
 
 ## Product support

@@ -1,20 +1,23 @@
 ## Change Log
 
+# release v1.9.4
+1. update orbbecsdk version to v1.10.2;
+2. support green_screen sample;
+3. video frame timestamps for Femto Bolt modify microseconds (us).（Femto Bolt firmware version Need 1.1.1 or above）.
+
 ### v1.9.3
 1. fix multi device sync bug;
 2. support for obtaining stride.
 
 ### v1.9.2
-
 1. switch OrbbecSDK version to v1.9.5;
 2. add k4a_device_switch_device_clock_sync_mode interface;
 3. add k4a_device_get_wired_sync_mode interface;
 4. add k4a_device_enable_soft_filter interface;
 5. k4aviewer support indicator switch;
-6. fix other bugs;
+6. fix other bugs.
 
 ### v1.9.1
-
 | **products list** | **firmware version** |**platform**|
 | --- | --- | --- |
 | Orbbec Femto Bolt  | 1.0.6/1.0.9  |Windows10+, Ubuntu18.04+ |
@@ -35,13 +38,11 @@
 13. Fix log display error by k4aviewer.
 
 ### v1.8.3
-
 1. Fix memory leakage issue;
 2. Fix the issue of failed reopening after abnormal shutdown;
 3. Other bug fixes.
 
 ### v1.8.1
-
 support Femto Bolt and Femto Mega
 | **products list** | **firmware version** |**platform**|
 | --- | --- | --- |
