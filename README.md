@@ -154,8 +154,8 @@ git submodule update --init --recursive
 
 | **products list** | **firmware version** |**platform**|
 | --- | --- | --- |
-| Orbbec Femto Bolt  | 1.0.6/1.0.9  |Windows10+, Ubuntu18.04+ |
-| Orbbec Femto Mega  | 1.1.5/1.1.7  |Windows10+, Ubuntu20.04+ |
+| Orbbec Femto Bolt  | 1.0.6/1.0.9/1.1.1  |Windows10+, Ubuntu18.04+ |
+| Orbbec Femto Mega  | 1.1.5/1.1.7/1.2.8  |Windows10+, Ubuntu20.04+ |
 
 
 ## Testing

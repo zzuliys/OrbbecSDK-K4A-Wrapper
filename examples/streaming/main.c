@@ -37,8 +37,7 @@ int main(int argc, char **argv)
         printf("Failed to open device\n");
         goto Exit;
     }
-    
-   
+
     k4a_device_configuration_t config = K4A_DEVICE_CONFIG_INIT_DISABLE_ALL;
     config.color_format = K4A_IMAGE_FORMAT_COLOR_MJPG;
     config.color_resolution = K4A_COLOR_RESOLUTION_1080P;
