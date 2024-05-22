@@ -1,15 +1,12 @@
-# release v1.9.4
+# release v1.10.1
 ## Change List
-1. update orbbecsdk version to v1.10.2;
-2. support green_screen sample;
-3. video frame timestamps for Femto Bolt modify microseconds (us).（Femto Bolt firmware version Need 1.1.1 or above）.
-
+1. update orbbecsdk version to v1.10.5.
 
 ## Product support
 | **products list** | **firmware version** |**platform**|
 | --- | --- | --- |
-| Orbbec Femto  Bolt| 1.0.6/1.0.9  |Windows10+, Ubuntu18.04+ |
-| Orbbec Femto Mega  | 1.1.5/1.1.7  |Windows10+, Ubuntu20.04+ |
+| Orbbec Femto Bolt  | 1.0.6/1.0.9/1.1.1  |Windows10+, Ubuntu18.04+ |
+| Orbbec Femto Mega  | 1.1.5/1.1.7/1.2.8  |Windows10+, Ubuntu20.04+ |
 ## Catalog Introduction
 - /
   - bin : Executable files and dynamic loading libraries

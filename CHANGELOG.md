@@ -1,5 +1,8 @@
 ## Change Log
 
+# release v1.10.1
+1. update orbbecsdk version to v1.10.5.
+
 # release v1.9.4
 1. update orbbecsdk version to v1.10.2;
 2. support green_screen sample;
