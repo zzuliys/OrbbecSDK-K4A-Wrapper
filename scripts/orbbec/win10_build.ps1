@@ -12,11 +12,11 @@ $cmake_cmd = $str + " -A x64 -DCMAKE_BUILD_TYPE=RELEASE .."
 Write-Host "cmake_cmd = $cmake_cmd"
 Invoke-Expression  $cmake_cmd
 
-Write-Host "msbuild build OrbbecSDK"
-cmake --build . --target ALL_BUILD  --config Release
+# Write-Host "msbuild build K4A"
+# cmake --build . --target ALL_BUILD  --config Release
 
-Write-Host "msbuild build INSTALL"
-cmake --build . --target INSTALL  --config Release
+# Write-Host "msbuild build INSTALL"
+# cmake --build . --target INSTALL  --config Release
 
 # Write-Host "install win10 package"
 # $package_name = Get-Content "../package_name.txt"
