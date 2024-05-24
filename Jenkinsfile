@@ -16,6 +16,7 @@ pipeline {
         stage('build code') {
             steps {
                 echo 'build code'
+                powershell "./scripts/orbbec/win10_build.ps1"
             }
         }
     }
