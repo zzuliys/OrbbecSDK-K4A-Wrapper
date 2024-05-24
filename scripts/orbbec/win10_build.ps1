@@ -8,7 +8,7 @@ New-Item -ItemType Directory -Path cmake_build
 Write-Host "cmake build"
 Set-Location cmake_build
 $str = 'cmake -G "Visual Studio 15 2017"'
-$cmake_cmd = $str + " -T host=$targetArch -A $platformName -DCMAKE_BUILD_TYPE=$releaseType $cmakeOptions .."
+$cmake_cmd = $str + " -A x64 -DCMAKE_BUILD_TYPE=RELEASE"
 Write-Host "cmake_cmd = $cmake_cmd"
 Invoke-Expression  $cmake_cmd
 
